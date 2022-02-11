@@ -79,23 +79,23 @@ def simple_alg(x0, y0, x1, y1, color=red):
             x0, x1 = x1, x0
             y0, y1 = y1, y0
         simple_alg_hori(x0, y0, x1, y1, color)
-    elif dy>dx: # If the line is more vertical than horizontal
+    else: # If the line is more vertical than horizontal, or if line is a perfect diagonal
         if y0>y1: # if y1 > y0, swap which point is p1 and which is p2
             x0, x1 = x1, x0
             y0, y1 = y1, y0
         simple_alg_vert(x0, y0, x1, y1, color)
     
-# Perfectly horizontal lines
-# left to right
-simple_alg(100,200, 900, 200, color=red)
-# right to left
-simple_alg(900,700, 100, 700, color=green)
+# Perfectly diagonal lines
 
-# perfectly vertical lines
-# top to bottom
-simple_alg(600,100, 600, 900, color=blue)
-# bottom to top
-simple_alg(250,900, 250, 100, color=black)
+# bottom left to top right
+simple_alg(100,800, 800, 100, color=red)
+# top right to bottom left
+simple_alg(200,900, 900, 200, color=green)
+
+# top left to bottom right
+simple_alg(200,100, 900, 800, color=blue)
+# bottom right to top left
+simple_alg(800,900, 100, 200, color=black)
 
 running = True
 while running:
