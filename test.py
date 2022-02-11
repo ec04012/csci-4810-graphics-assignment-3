@@ -98,10 +98,11 @@ def bresenham(x0, y0, x1, y1, color=red):
     dy = y1 - y0
 
     # Calculate constants
-    error = (dy << 1) - dx
-    inc1 = (dy << 1)
-    inc2 = (dy - dx) << 1
-    ystep = 1
+    error = (abs(dy) << 1) - dx
+    inc1 = (abs(dy) << 1)
+    inc2 = (abs(dy) - dx) << 1
+    # determine amount to increment y based on whether line goes up or down
+    ystep = 1 if y0 < y1 else -1
     
     y = y0
     for x in range(x0, x1):
@@ -152,8 +153,8 @@ while running:
 
         # draw into buffer
         #simple_alg(x0,y0, x1,y1, color=red)
-        bresenham(0,0,800,400, color=red)
-        bresenham(0,10,1000,900, color=blue)
+        bresenham(20,500,800,100, color=blue)
+        simple_alg(20,600,800,200, color=red)
 
         # update display
         pygame.display.flip()
