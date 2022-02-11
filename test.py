@@ -85,17 +85,17 @@ def simple_alg(x0, y0, x1, y1, color=red):
             y0, y1 = y1, y0
         simple_alg_vert(x0, y0, x1, y1, color)
     
-# slanted horizontals
+# slanted vertical
 
 # bottom left to top right
-simple_alg(100,300, 800, 100, color=red)
+simple_alg(100,900, 300, 100, color=red)
 # top right to bottom left
-simple_alg(800,200, 100, 400, color=green)
+simple_alg(500,100, 300, 900, color=green)
 
 # top left to bottom right
-simple_alg(100,500, 800, 700, color=blue)
+simple_alg(500,100, 700, 900, color=blue)
 # bottom right to top left
-simple_alg(800,800, 100, 600, color=black)
+simple_alg(900,900, 600, 100, color=black)
 
 running = True
 while running:
