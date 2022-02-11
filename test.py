@@ -85,19 +85,17 @@ def simple_alg(x0, y0, x1, y1, color=red):
             y0, y1 = y1, y0
         simple_alg_vert(x0, y0, x1, y1, color)
     
-# working for horizontal lines (lines where dx > dy)
-simple_alg(0,0, 900, 400, color=red)
-simple_alg(0,1000, 900, 600, color=orange)
 # Perfectly horizontal lines
-simple_alg(100,200, 900, 200, color=yellow)
-simple_alg(100,700, 800, 700, color=black)
+# left to right
+simple_alg(100,200, 900, 200, color=red)
+# right to left
+simple_alg(900,700, 100, 700, color=green)
 
-# not working for vertical lines
-simple_alg(0,0, 400, 800, color=green)
-simple_alg(200,1000, 600, 0, color=indigo)
 # perfectly vertical lines
-simple_alg(600,0, 600, 1000, color=blue)
-simple_alg(250,1000, 250, 0, color=violet)
+# top to bottom
+simple_alg(600,100, 600, 900, color=blue)
+# bottom to top
+simple_alg(250,900, 250, 100, color=black)
 
 running = True
 while running:
