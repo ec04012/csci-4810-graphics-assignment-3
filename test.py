@@ -89,6 +89,29 @@ def simple_alg(x0, y0, x1, y1, color=red):
             y0, y1 = y1, y0
         simple_alg_vert(x0, y0, x1, y1, color)
 
+# bresenham line drawing algorithm
+# x0 and y0 are the coordinates of the first point
+# x1 and y1 are the coordinates of the second point
+# color is a tuple containing rgb values. default is red
+def bresenham(x0, y0, x1, y1, color=red):
+    dx = x1 - x0
+    dy = y1 - y0
+
+    # Calculate constants
+    error = (dy << 1) - dx
+    inc1 = (dy << 1)
+    inc2 = (dy - dx) << 1
+    ystep = 1
+    
+    y = y0
+    for x in range(x0, x1):
+        pygame.gfxdraw.pixel(screen, x, y, color)
+        if error < 0:
+            error = error + inc1
+        else:
+            y = y + ystep
+            error = error + inc2
+
 # check if the user has exited the program
 def check_for_exit():
     for event in pygame.event.get():
@@ -112,23 +135,26 @@ def cleanup():
 running = True
 # number of lines that have been drawn, and total num of lines to draw
 num_drawn_lines = 0
-total_num_lines = 1000
+total_num_lines = 1
 # list of timings
 timings = []
 while running:
     check_for_exit()
     while num_drawn_lines < total_num_lines:
         check_for_exit()
-        x0 = random.randint(0,999)
-        y0 = random.randint(0,999)
-        x1 = random.randint(0,999)
-        y1 = random.randint(0,999)
+        x0 = random.randint(0,1000)
+        y0 = random.randint(0,1000)
+        x1 = random.randint(0,1000)
+        y1 = random.randint(0,1000)
         
         # start timing
         time_start = time.time()
 
         # draw into buffer
-        simple_alg(x0,y0, x1,y1, color=red)
+        #simple_alg(x0,y0, x1,y1, color=red)
+        bresenham(0,0,800,400, color=red)
+        bresenham(0,10,1000,900, color=blue)
+
         # update display
         pygame.display.flip()
 
