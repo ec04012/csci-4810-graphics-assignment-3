@@ -5,6 +5,7 @@ from pygame.locals import (KEYDOWN, K_ESCAPE)
 from math import trunc
 import sys
 import random
+import time
 
 # Set up screen
 pygame.init()
@@ -12,7 +13,9 @@ pygame.display.set_caption('CSCI 4810 Assignment 1')
 screen = pygame.display.set_mode((1000, 1000))
 # Fill the background with white
 screen.fill((255, 255, 255))
+pygame.display.flip()
 
+# color tuples, used for testing
 red = (255,0,0)
 orange = (255,127,0)
 yellow = (255,255,0)
@@ -86,31 +89,52 @@ def simple_alg(x0, y0, x1, y1, color=red):
             y0, y1 = y1, y0
         simple_alg_vert(x0, y0, x1, y1, color)
 
-running = True
-num_drawn_lines = 0
-total_num_lines = 100
-while running:
+# check if the user has exited the program
+def check_for_exit():
     for event in pygame.event.get():
         if event.type == KEYDOWN: # Did the user hit a key?
             if event.key == K_ESCAPE: # Was it the Escape key? If so, stop the loop.
-                running = False
-                pygame.quit()
-                sys.exit()
+                cleanup()
         if event.type == pygame.QUIT: # Exit game if user clicks x button
-            running = False
-            pygame.quit()
-            sys.exit()
+            cleanup()
 
+# function to call when exiting the program
+def cleanup():
+    running = False
+    pygame.quit()
+    total_time = sum(timings)
+    print("Total time: %f" %total_time)
+    print("Num of lines: %i" %num_drawn_lines)
+    print("Average time: %f" %(total_time/total_num_lines))
+    sys.exit()
+
+# to keep displaying the image, the program has to keep running until we shut it down
+running = True
+# number of lines that have been drawn, and total num of lines to draw
+num_drawn_lines = 0
+total_num_lines = 1000
+# list of timings
+timings = []
+while running:
+    check_for_exit()
     while num_drawn_lines < total_num_lines:
+        check_for_exit()
         x0 = random.randint(0,999)
         y0 = random.randint(0,999)
         x1 = random.randint(0,999)
         y1 = random.randint(0,999)
         
+        # start timing
+        time_start = time.time()
+
         # draw into buffer
         simple_alg(x0,y0, x1,y1, color=red)
         # update display
         pygame.display.flip()
+
+        # finish timing
+        duration = time.time() - time_start
+        timings.append(duration)
 
         # increment counter
         num_drawn_lines += 1
