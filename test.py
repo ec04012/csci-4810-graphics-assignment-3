@@ -89,11 +89,39 @@ def simple_alg(x0, y0, x1, y1, color=red):
             y0, y1 = y1, y0
         simple_alg_vert(x0, y0, x1, y1, color)
 
-# bresenham line drawing algorithm
+# bresenham for steep lines (more vertical)
 # x0 and y0 are the coordinates of the first point
 # x1 and y1 are the coordinates of the second point
 # color is a tuple containing rgb values. default is red
-def bresenham(x0, y0, x1, y1, color=red):
+def bresenham_steep(x0, y0, x1, y1, color):
+    # flip the line over the diagonal so that the line is now shallow
+    x0, y0 = y0, x0
+    x1, y1 = y1, x1
+
+    # Calculate constants
+    dx = x1 - x0
+    dy = y1 - y0
+    error = (abs(dy) << 1) - dx
+    inc1 = (abs(dy) << 1)
+    inc2 = (abs(dy) - dx) << 1
+    # determine amount to increment y based on whether line goes up or down
+    ystep = 1 if y0 < y1 else -1
+
+    y = y0
+    for x in range(x0, x1):
+        # reverse flip when drawing the line
+        pygame.gfxdraw.pixel(screen, y, x, color)
+        if error < 0:
+            error = error + inc1
+        else:
+            y = y + ystep
+            error = error + inc2
+
+# bresenham for gradual lines (more horizontal)
+# x0 and y0 are the coordinates of the first point
+# x1 and y1 are the coordinates of the second point
+# color is a tuple containing rgb values. default is red
+def bresenham_gradual(x0, y0, x1, y1, color):
     dx = x1 - x0
     dy = y1 - y0
 
@@ -103,7 +131,7 @@ def bresenham(x0, y0, x1, y1, color=red):
     inc2 = (abs(dy) - dx) << 1
     # determine amount to increment y based on whether line goes up or down
     ystep = 1 if y0 < y1 else -1
-    
+
     y = y0
     for x in range(x0, x1):
         pygame.gfxdraw.pixel(screen, x, y, color)
@@ -112,6 +140,20 @@ def bresenham(x0, y0, x1, y1, color=red):
         else:
             y = y + ystep
             error = error + inc2
+
+# bresenham line drawing algorithm, selects appropriate loop
+# x0 and y0 are the coordinates of the first point
+# x1 and y1 are the coordinates of the second point
+# color is a tuple containing rgb values. default is red
+def bresenham(x0, y0, x1, y1, color=red):
+    # select appropriate loop based on whether line is steep or gradual
+    dx = x1 - x0
+    dy = y1 - y0
+    is_steep = abs(dy) > abs(dx)
+    if is_steep:
+        bresenham_steep(x0, y0, x1, y1, color)
+    else:
+        bresenham_gradual(x0, y0, x1, y1, color)
 
 # check if the user has exited the program
 def check_for_exit():
@@ -152,9 +194,9 @@ while running:
         time_start = time.time()
 
         # draw into buffer
-        #simple_alg(x0,y0, x1,y1, color=red)
-        bresenham(20,500,800,100, color=blue)
-        simple_alg(20,600,800,200, color=red)
+        simple_alg(100,100,300,900, color=red)
+        bresenham(200,100,400,900, color=blue)
+
 
         # update display
         pygame.display.flip()
