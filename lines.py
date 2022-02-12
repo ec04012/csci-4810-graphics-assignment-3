@@ -217,7 +217,7 @@ num_drawn_lines = 0
 total_num_lines = args.n
 # list of timings
 timings = []
-draw_gridlines()
+#draw_gridlines()
 while running:
     check_for_exit()
     if num_drawn_lines < total_num_lines:
