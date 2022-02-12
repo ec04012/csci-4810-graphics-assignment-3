@@ -6,6 +6,24 @@ from math import trunc
 import sys
 import random
 import time
+import argparse
+
+# read command line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("-n", type=int, help="Number of random lines to draw. Default = 10", default=10)
+parser.add_argument("-simple", "-s", action="store_true", help="Use Simple Line drawing algorithm")
+parser.add_argument("-bresenham", "-b", action="store_true", help="Use Bresenham drawing algorithm")
+args = parser.parse_args()
+print("")
+# check for valid cmd args
+if args.simple and args.bresenham:
+    print("ERROR: Please select ONLY one algorithm, not both.")
+    parser.print_help()
+    exit(0)
+if not args.bresenham and not args.simple:
+    print("ERROR: please select an algorithm.")
+    parser.print_help()
+    exit(0)
 
 # Set up screen
 pygame.init()
@@ -197,9 +215,10 @@ def draw_gridlines():
 running = True
 # number of lines that have been drawn, and total num of lines to draw
 num_drawn_lines = 0
-total_num_lines = 1
+total_num_lines = args.n
 # list of timings
 timings = []
+draw_gridlines()
 while running:
     check_for_exit()
     while num_drawn_lines < total_num_lines:
@@ -209,24 +228,11 @@ while running:
         x1 = random.randint(0,1000)
         y1 = random.randint(0,1000)
 
-        draw_gridlines()
-
         # start timing
         time_start = time.time()
 
-        # slanted vertical
-        # bottom left to top right
-        bresenham(100,900, 300, 100, color=red)
-        # top right to bottom left
-        bresenham(500,100, 300, 900, color=green)
-
-        # top left to bottom right
-        bresenham(500,100, 700, 900, color=blue)
-        # bottom right to top left
-        bresenham(900,900, 600, 100, color=black)
-
         # test bresenham with random lines
-        #bresenham(x0,y0, x1, y1, color=red)
+        bresenham(x0,y0, x1, y1, color=red)
 
         # update display
         pygame.display.flip()
