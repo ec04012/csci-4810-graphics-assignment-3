@@ -93,8 +93,8 @@ def simple_alg_vert(x0, y0, x1, y1, color):
 # simple line drawing algorithm. determines type of line and choose appropriate loop
 # x0 and y0 are the coordinates of the first point
 # x1 and y1 are the coordinates of the second point
-# color is a tuple containing rgb values. default is red
-def simple_alg(x0, y0, x1, y1, color=red):
+# color is a tuple containing rgb values.
+def simple_alg(x0, y0, x1, y1, color):
     dx = abs(x1-x0) # |delta x|
     dy = abs(y1-y0) # |delta y|
     if dx>dy: #if the line is more horizontal than vertical
@@ -111,7 +111,7 @@ def simple_alg(x0, y0, x1, y1, color=red):
 # bresenham for steep lines (more vertical)
 # x0 and y0 are the coordinates of the first point
 # x1 and y1 are the coordinates of the second point
-# color is a tuple containing rgb values. default is red
+# color is a tuple containing rgb values.
 def bresenham_steep(x0, y0, x1, y1, color):
     # flip the line over the diagonal so that the line is now shallow
     x0, y0 = y0, x0
@@ -144,7 +144,7 @@ def bresenham_steep(x0, y0, x1, y1, color):
 # bresenham for gradual lines (more horizontal)
 # x0 and y0 are the coordinates of the first point
 # x1 and y1 are the coordinates of the second point
-# color is a tuple containing rgb values. default is red
+# color is a tuple containing rgb values.
 def bresenham_gradual(x0, y0, x1, y1, color):
     # swap the order of the points if the first point is right of the second
     if x0 > x1:
@@ -173,7 +173,7 @@ def bresenham_gradual(x0, y0, x1, y1, color):
 # x0 and y0 are the coordinates of the first point
 # x1 and y1 are the coordinates of the second point
 # color is a tuple containing rgb values. default is red
-def bresenham(x0, y0, x1, y1, color=red):
+def bresenham(x0, y0, x1, y1, color):
     # select appropriate loop based on whether line is steep or gradual
     dx = x1 - x0
     dy = y1 - y0
@@ -207,6 +207,17 @@ def draw_gridlines():
     # update displau
     pygame.display.flip()
 
+# draws the specified line in the specified color using the specified algorithm
+# x0 and y0 are the coordinates of the first point
+# x1 and y1 are the coordinates of the second point
+# color is a tuple containing rgb values. default is red
+# algorithm is specified using cmd args
+def draw_line(x0, y0, x1, y1, color=red):
+    if args.simple:
+        simple_alg(x0, y0, x1, y1, color)
+    elif args.bresenham:
+        bresenham(x0, y0, x1, y1, color)
+
 # to keep displaying the image, the program has to keep running until we shut it down
 running = True
 # number of lines that have been drawn, and total num of lines to draw
@@ -228,8 +239,8 @@ while running:
             # start timing
             time_start = time.time()
 
-            # test bresenham with random lines
-            bresenham(x0,y0, x1, y1, color=red)
+            # draw line
+            draw_line(x0,y0, x1, y1, color=red)
 
             # update display
             pygame.display.flip()
