@@ -196,10 +196,6 @@ def check_for_exit():
 def cleanup():
     running = False
     pygame.quit()
-    total_time = sum(timings)
-    print("Total time: %f" %total_time)
-    print("Num of lines: %i" %num_drawn_lines)
-    print("Average time: %f" %(total_time/total_num_lines))
     sys.exit()
 
 # draws gridlines that are 100 pixels apart
@@ -221,25 +217,34 @@ timings = []
 draw_gridlines()
 while running:
     check_for_exit()
-    while num_drawn_lines < total_num_lines:
-        check_for_exit()
-        x0 = random.randint(0,1000)
-        y0 = random.randint(0,1000)
-        x1 = random.randint(0,1000)
-        y1 = random.randint(0,1000)
+    if num_drawn_lines < total_num_lines:
+        while num_drawn_lines < total_num_lines:
+            check_for_exit()
+            x0 = random.randint(0,1000)
+            y0 = random.randint(0,1000)
+            x1 = random.randint(0,1000)
+            y1 = random.randint(0,1000)
 
-        # start timing
-        time_start = time.time()
+            # start timing
+            time_start = time.time()
 
-        # test bresenham with random lines
-        bresenham(x0,y0, x1, y1, color=red)
+            # test bresenham with random lines
+            bresenham(x0,y0, x1, y1, color=red)
 
-        # update display
-        pygame.display.flip()
+            # update display
+            pygame.display.flip()
 
-        # finish timing
-        duration = time.time() - time_start
-        timings.append(duration)
+            # finish timing
+            duration = time.time() - time_start
+            timings.append(duration)
 
-        # increment counter
-        num_drawn_lines += 1
+            # increment counter
+            num_drawn_lines += 1
+            # while
+
+        total_time = sum(timings)
+        print("Total time: %f" %total_time)
+        print("Num of lines: %i" %num_drawn_lines)
+        print("Average time: %f" %(total_time/total_num_lines))
+        # if
+    # while running
