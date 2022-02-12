@@ -98,6 +98,11 @@ def bresenham_steep(x0, y0, x1, y1, color):
     x0, y0 = y0, x0
     x1, y1 = y1, x1
 
+    # swap the order of the points if the first point is right of the second
+    if x0 > x1:
+        x0, x1 = x1, x0
+        y0, y1 = y1, y0
+
     # Calculate constants
     dx = x1 - x0
     dy = y1 - y0
@@ -122,10 +127,14 @@ def bresenham_steep(x0, y0, x1, y1, color):
 # x1 and y1 are the coordinates of the second point
 # color is a tuple containing rgb values. default is red
 def bresenham_gradual(x0, y0, x1, y1, color):
+    # swap the order of the points if the first point is right of the second
+    if x0 > x1:
+        x0, x1 = x1, x0
+        y0, y1 = y1, y0
+    
+    # Calculate constants
     dx = x1 - x0
     dy = y1 - y0
-
-    # Calculate constants
     error = (abs(dy) << 1) - dx
     inc1 = (abs(dy) << 1)
     inc2 = (abs(dy) - dx) << 1
@@ -193,10 +202,8 @@ while running:
         # start timing
         time_start = time.time()
 
-        # draw into buffer
-        simple_alg(100,100,300,900, color=red)
-        bresenham(200,100,400,900, color=blue)
-
+        bresenham(100,900, 200, 100, color=red)
+        simple_alg(200,900, 300, 100, color=blue)
 
         # update display
         pygame.display.flip()
