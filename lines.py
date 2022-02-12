@@ -61,10 +61,6 @@ def simple_alg_hori(x0, y0, x1, y1, color):
         x = x0 + i
         y = m * i + y0
         y = trunc(y)
-        #print("i: " + str(i))
-        #print("x: " + str(x))
-        #print("y: " + str(y))
-        #print("")
         # draw the pixel in buffer (the line won't actullay show until pygame.display.flip() is called)
         pygame.gfxdraw.pixel(screen, x, y, color)
     #print("================================================================")
@@ -82,10 +78,6 @@ def simple_alg_vert(x0, y0, x1, y1, color):
         y = y0 + i
         x = m * i + x0
         x = trunc(x)
-        #print("i: " + str(i))
-        #print("x: " + str(x))
-        #print("y: " + str(y))
-        #print("")
         # draw the pixel in buffer (the line won't actullay show until pygame.display.flip() is called)
         pygame.gfxdraw.pixel(screen, x, y, color)
     #print("================================================================")
