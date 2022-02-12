@@ -1,5 +1,5 @@
 # csci-4810-graphics-assignment-1
-Run README.md to generate lines.
+Run lines.py to generate lines.
 
 cases.txt is a list of test cases.
 
