@@ -25,6 +25,7 @@ indigo = (75, 0, 130)
 violet = (178,30,241)
 
 white = (255,255,255)
+gray = (230,230,230)
 black = (10,10,10)
 cyan = (0,255,255)
 magenta = (255,255,0)
@@ -183,6 +184,15 @@ def cleanup():
     print("Average time: %f" %(total_time/total_num_lines))
     sys.exit()
 
+# draws gridlines that are 100 pixels apart
+def draw_gridlines():
+    # draw in buffer
+    for i in range(0,10):
+        simple_alg(i * 100, 0, i * 100, 1000, color=gray)
+        simple_alg(0, i * 100, 1000, i * 100, color=gray)
+    # update displau
+    pygame.display.flip()
+
 # to keep displaying the image, the program has to keep running until we shut it down
 running = True
 # number of lines that have been drawn, and total num of lines to draw
@@ -198,12 +208,25 @@ while running:
         y0 = random.randint(0,1000)
         x1 = random.randint(0,1000)
         y1 = random.randint(0,1000)
-        
+
+        draw_gridlines()
+
         # start timing
         time_start = time.time()
 
-        bresenham(100,900, 200, 100, color=red)
-        simple_alg(200,900, 300, 100, color=blue)
+        # slanted vertical
+        # bottom left to top right
+        bresenham(100,900, 300, 100, color=red)
+        # top right to bottom left
+        bresenham(500,100, 300, 900, color=green)
+
+        # top left to bottom right
+        bresenham(500,100, 700, 900, color=blue)
+        # bottom right to top left
+        bresenham(900,900, 600, 100, color=black)
+
+        # test bresenham with random lines
+        #bresenham(x0,y0, x1, y1, color=red)
 
         # update display
         pygame.display.flip()

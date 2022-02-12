@@ -1,54 +1,50 @@
-# Perfectly horizontal lines
+        # Perfectly horizontal lines
+        # left to right
+        simple_alg(100,200, 900, 200, color=red)
+        # right to left
+        simple_alg(900,700, 100, 700, color=green)
 
-# left to right
-simple_alg(100,200, 900, 200, color=red)
-# right to left
-simple_alg(900,700, 100, 700, color=green)
-
-# perfectly vertical lines
-# top to bottom
-simple_alg(600,100, 600, 900, color=blue)
-# bottom to top
-simple_alg(250,900, 250, 100, color=black)
-
-# ======================================================================
-
-# Perfectly diagonal lines
-
-# bottom left to top right
-simple_alg(100,800, 800, 100, color=red)
-# top right to bottom left
-simple_alg(200,900, 900, 200, color=green)
-
-# top left to bottom right
-simple_alg(200,100, 900, 800, color=blue)
-# bottom to top
-simple_alg(800,900, 100, 200, color=black)
+        # perfectly vertical lines
+        # top to bottom
+        simple_alg(600,100, 600, 900, color=blue)
+        # bottom to top
+        simple_alg(200,900, 200, 100, color=black)
 
 # ======================================================================
 
-# slanted horizontals
+        # Perfectly diagonal lines
+        # bottom left to top right
+        simple_alg(100,800, 800, 100, color=red)
+        # top right to bottom left
+        simple_alg(900,200, 200, 900, color=green)
 
-# bottom left to top right
-simple_alg(100,300, 800, 100, color=red)
-# top right to bottom left
-simple_alg(800,200, 100, 400, color=green)
-
-# top left to bottom right
-simple_alg(100,500, 800, 700, color=blue)
-# bottom right to top left
-simple_alg(800,800, 100, 600, color=black)
+        # top left to bottom right
+        simple_alg(200,100, 900, 800, color=blue)
+        # bottom right to top left
+        simple_alg(800,900, 100, 200, color=black)
 
 # ======================================================================
 
-# slanted vertical
+        # slanted horizontals
+        # up and to the right
+        simple_alg(100,300, 800, 100, color=red)
+        # down and to the left
+        simple_alg(800,200, 100, 400, color=green)
 
-# bottom left to top right
-simple_alg(100,900, 300, 100, color=red)
-# top right to bottom left
-simple_alg(500,100, 300, 900, color=green)
+        # down and to the right
+        simple_alg(100,500, 800, 700, color=blue)
+        # up and to the left
+        simple_alg(800,800, 100, 600, color=black)
 
-# top left to bottom right
-simple_alg(500,100, 700, 900, color=blue)
-# bottom right to top left
-simple_alg(900,900, 600, 100, color=black)
+# ======================================================================
+
+        # slanted vertical
+        # up and to the right
+        simple_alg(100,900, 300, 100, color=red)
+        # down and to the left
+        simple_alg(500,100, 300, 900, color=green)
+
+        # down and to the right
+        simple_alg(500,100, 700, 900, color=blue)
+        # up and to the left
+        simple_alg(900,900, 600, 100, color=black)
