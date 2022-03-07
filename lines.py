@@ -237,7 +237,61 @@ lines = numpy.array([
     [200, 100, 200, 600],
     [100, 100, 200, 600],
 ])
+lines = lines + 300
+
 for l in lines:
+    draw_line(l[0], l[1], l[2], l[3])
+pygame.display.flip()
+
+translate = numpy.array([
+    [1,0,0],
+    [0,1,0],
+    [100,100,1],
+])
+for l in lines:
+    result = numpy.array([l[0],l[1],1]).dot(translate)
+    l[0], l[1] = result[0], result[1]
+    result = numpy.array([l[2],l[3],1]).dot(translate)
+    l[2], l[3] = result[0], result[1]
+    draw_line(l[0], l[1], l[2], l[3])
+pygame.display.flip()
+
+translate = numpy.array([
+    [1,0,0],
+    [0,1,0],
+    [100,-100,1],
+])
+for l in lines:
+    result = numpy.array([l[0],l[1],1]).dot(translate)
+    l[0], l[1] = result[0], result[1]
+    result = numpy.array([l[2],l[3],1]).dot(translate)
+    l[2], l[3] = result[0], result[1]
+    draw_line(l[0], l[1], l[2], l[3])
+pygame.display.flip()
+
+translate = numpy.array([
+    [1,0,0],
+    [0,1,0],
+    [-300,-200,1],
+])
+for l in lines:
+    result = numpy.array([l[0],l[1],1]).dot(translate)
+    l[0], l[1] = result[0], result[1]
+    result = numpy.array([l[2],l[3],1]).dot(translate)
+    l[2], l[3] = result[0], result[1]
+    draw_line(l[0], l[1], l[2], l[3])
+pygame.display.flip()
+
+translate = numpy.array([
+    [1,0,0],
+    [0,1,0],
+    [-100,100,1],
+])
+for l in lines:
+    result = numpy.array([l[0],l[1],1]).dot(translate)
+    l[0], l[1] = result[0], result[1]
+    result = numpy.array([l[2],l[3],1]).dot(translate)
+    l[2], l[3] = result[0], result[1]
     draw_line(l[0], l[1], l[2], l[3])
 pygame.display.flip()
 
