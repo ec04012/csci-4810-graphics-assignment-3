@@ -1,4 +1,5 @@
 # importing Image class from PIL package
+from filecmp import clear_cache
 import pygame
 import pygame.gfxdraw
 from pygame.locals import (KEYDOWN, K_ESCAPE)
@@ -257,42 +258,42 @@ def translate(tx, ty):
     ])
     return t_matrix
 
+def basic_scale(sx, sy):
+    t_matrix = numpy.array([
+        [sx,0,0],
+        [0,sy,0],
+        [0,0,1],
+    ])
+    return t_matrix
+
 # Right triangle
 lines = numpy.array([
-    [400, 400, 500, 400],
-    [500, 400, 500, 900],
-    [400, 400, 500, 900],
+    [100, 100, 200, 100],
+    [200, 100, 200, 500],
+    [100, 100, 200, 500],
 ])
 display_lines(lines)
 
 time.sleep(1)
 
 # Up and to the right
-apply_transformation(lines, translate(100, 100))
+apply_transformation(lines, basic_scale(2, 2))
+print(lines)
 display_lines(lines)
 
 time.sleep(1)
 
-# Down and to the right
-apply_transformation(lines, translate(100, -100))
-display_lines(lines)
-
-time.sleep(1)
-
-# Down and to the left
-apply_transformation(lines, translate(-200, -300))
-display_lines(lines)
-
-time.sleep(1)
-
-# Up and to the left
-apply_transformation(lines, translate(-100, 100))
-display_lines(lines)
-
-time.sleep(1)
-
-# Clear previous lines
+apply_transformation(lines, basic_scale(.5, .5))
+print(lines)
 display_lines(lines, clear_screen=True)
+
+time.sleep(1)
+
+apply_transformation(lines, basic_scale(3, 1))
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
 
 # to keep displaying the image, the program has to keep running until we shut it down
 running = True
