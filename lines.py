@@ -266,6 +266,10 @@ def basic_scale(sx, sy):
     ])
     return t_matrix
 
+def scale(sx, sy, cx, cy):
+    t_matrix = translate(-cx, -cy).dot(basic_scale(sx, sy)).dot(translate(cx, cy))
+    return t_matrix
+
 # Right triangle
 lines = numpy.array([
     [100, 100, 200, 100],
@@ -277,19 +281,31 @@ display_lines(lines)
 time.sleep(1)
 
 # Up and to the right
-apply_transformation(lines, basic_scale(2, 2))
+apply_transformation(lines, scale(2, 2, 100, 100))
 print(lines)
 display_lines(lines)
 
 time.sleep(1)
 
-apply_transformation(lines, basic_scale(.5, .5))
+apply_transformation(lines, scale(.5, .5, 100, 100))
 print(lines)
 display_lines(lines, clear_screen=True)
 
 time.sleep(1)
 
-apply_transformation(lines, basic_scale(3, 1))
+apply_transformation(lines, scale(3, 1, 100, 100))
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+apply_transformation(lines, translate(0,300))
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+apply_transformation(lines, scale(1, -1, 100, 400))
 print(lines)
 display_lines(lines)
 
