@@ -4,9 +4,9 @@ import pygame.gfxdraw
 from pygame.locals import (KEYDOWN, K_ESCAPE)
 from math import trunc
 import sys
-import random
 import time
 import argparse
+import numpy
 
 # read command line arguments
 parser = argparse.ArgumentParser()
@@ -28,7 +28,9 @@ if not args.bresenham and not args.simple:
 # Set up screen
 pygame.init()
 pygame.display.set_caption('CSCI 4810 Assignment 1')
-screen = pygame.display.set_mode((1000, 1000))
+window_size_x = 1000
+window_size_y = 1000
+screen = pygame.display.set_mode((window_size_x, window_size_y))
 # Fill the background with white
 screen.fill((255, 255, 255))
 pygame.display.flip()
@@ -48,6 +50,12 @@ black = (10,10,10)
 cyan = (0,255,255)
 magenta = (255,255,0)
 
+# Draws a pixel at the specified coordinates.
+# Optionally, specifiy a color as tuple of rgb values
+# This function reverses the y direction so that increasing y corresponds to moving up.
+def draw_pixel(x, y, color):
+    pygame.gfxdraw.pixel(screen, x, window_size_y-y, color)
+
 # simple line drawing algorithm for Lines that are more horizontal
 # x0 and y0 are the coordinates of the first point
 # x1 and y1 are the coordinates of the second point
@@ -62,7 +70,8 @@ def simple_alg_hori(x0, y0, x1, y1, color):
         y = m * i + y0
         y = trunc(y)
         # draw the pixel in buffer (the line won't actullay show until pygame.display.flip() is called)
-        pygame.gfxdraw.pixel(screen, x, y, color)
+        #pygame.gfxdraw.pixel(screen, x, y, color)
+        draw_pixel(x,y,color)
     #print("================================================================")
 
 # simple line drawing algorithm for lines that are more vertical
@@ -79,7 +88,8 @@ def simple_alg_vert(x0, y0, x1, y1, color):
         x = m * i + x0
         x = trunc(x)
         # draw the pixel in buffer (the line won't actullay show until pygame.display.flip() is called)
-        pygame.gfxdraw.pixel(screen, x, y, color)
+        #pygame.gfxdraw.pixel(screen, x, y, color)
+        draw_pixel(x,y,color)
     #print("================================================================")
 
 # simple line drawing algorithm. determines type of line and choose appropriate loop
@@ -126,7 +136,8 @@ def bresenham_steep(x0, y0, x1, y1, color):
     y = y0
     for x in range(x0, x1):
         # reverse flip when drawing the line
-        pygame.gfxdraw.pixel(screen, y, x, color)
+        #pygame.gfxdraw.pixel(screen, y, x, color)
+        draw_pixel(y,x,color)
         if error < 0:
             error = error + inc1
         else:
@@ -154,7 +165,8 @@ def bresenham_gradual(x0, y0, x1, y1, color):
 
     y = y0
     for x in range(x0, x1):
-        pygame.gfxdraw.pixel(screen, x, y, color)
+        #pygame.gfxdraw.pixel(screen, x, y, color)
+        draw_pixel(x,y,color)
         if error < 0:
             error = error + inc1
         else:
@@ -218,36 +230,17 @@ total_num_lines = args.n
 # list of timings
 timings = []
 #draw_gridlines()
+
+# Right triangle
+lines = numpy.array([
+    [100, 100, 200, 100],
+    [200, 100, 200, 600],
+    [100, 100, 200, 600],
+])
+for l in lines:
+    draw_line(l[0], l[1], l[2], l[3])
+pygame.display.flip()
+
 while running:
     check_for_exit()
-    if num_drawn_lines < total_num_lines:
-        while num_drawn_lines < total_num_lines:
-            check_for_exit()
-            x0 = random.randint(0,1000)
-            y0 = random.randint(0,1000)
-            x1 = random.randint(0,1000)
-            y1 = random.randint(0,1000)
-
-            # start timing
-            time_start = time.time()
-
-            # draw line
-            draw_line(x0,y0, x1, y1, color=red)
-
-            # update display
-            pygame.display.flip()
-
-            # finish timing
-            duration = time.time() - time_start
-            timings.append(duration)
-
-            # increment counter
-            num_drawn_lines += 1
-            # while
-
-        total_time = sum(timings)
-        print("Total time: %f" %total_time)
-        print("Num of lines: %i" %num_drawn_lines)
-        print("Average time: %f" %(total_time/total_num_lines))
-        # if
     # while running
