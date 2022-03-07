@@ -25,16 +25,6 @@ if not args.bresenham and not args.simple:
     parser.print_help()
     exit(0)
 
-# Set up screen
-pygame.init()
-pygame.display.set_caption('CSCI 4810 Assignment 1')
-window_size_x = 1000
-window_size_y = 1000
-screen = pygame.display.set_mode((window_size_x, window_size_y))
-# Fill the background with white
-screen.fill((255, 255, 255))
-pygame.display.flip()
-
 # color tuples, used for testing
 red = (255,0,0)
 orange = (255,127,0)
@@ -49,6 +39,20 @@ gray = (230,230,230)
 black = (10,10,10)
 cyan = (0,255,255)
 magenta = (255,255,0)
+
+# Settings 
+bg_color = white
+window_name = "CSCI 4810 Assignment 2"
+window_size_x = 1000
+window_size_y = 1000
+
+# Set up screen
+pygame.init()
+pygame.display.set_caption(window_name)
+screen = pygame.display.set_mode((window_size_x, window_size_y))
+# Fill the background
+screen.fill(bg_color)
+pygame.display.flip()
 
 # Draws a pixel at the specified coordinates.
 # Optionally, specifiy a color as tuple of rgb values
@@ -198,6 +202,7 @@ def check_for_exit():
 
 # function to call when exiting the program
 def cleanup():
+    global running
     running = False
     pygame.quit()
     sys.exit()
@@ -222,79 +227,75 @@ def draw_line(x0, y0, x1, y1, color=red):
     elif args.bresenham:
         bresenham(x0, y0, x1, y1, color)
 
-# to keep displaying the image, the program has to keep running until we shut it down
-running = True
-# number of lines that have been drawn, and total num of lines to draw
-num_drawn_lines = 0
-total_num_lines = args.n
-# list of timings
-timings = []
-#draw_gridlines()
+# Applies the specified transformation to the specified lines by
+# multiplying the given matrix with the coordinates of the lines.
+def apply_transformation(datalines, matrix):
+    for line in datalines:
+        # Apply matrix to first point
+        p1 = numpy.array([line[0], line[1], 1])
+        result = p1.dot(matrix)
+        line[0], line[1] = result[0], result[1]
+        # Apply matrix to second point
+        p2 = numpy.array([line[2], line[3], 1])
+        result = p2.dot(matrix)
+        line[2], line[3] = result[0], result[1]
+
+# Scan converts the specified lines.
+# Optionally clears the screen beforehand.
+def display_lines(datalines, clear_screen=False):
+    if clear_screen:
+        screen.fill(bg_color)
+    for l in datalines:
+        draw_line(l[0], l[1], l[2], l[3])
+    pygame.display.flip()
+
+def translate(tx, ty):
+    t_matrix = numpy.array([
+        [1,0,0],
+        [0,1,0],
+        [tx,ty,1],
+    ])
+    return t_matrix
 
 # Right triangle
 lines = numpy.array([
-    [100, 100, 200, 100],
-    [200, 100, 200, 600],
-    [100, 100, 200, 600],
+    [400, 400, 500, 400],
+    [500, 400, 500, 900],
+    [400, 400, 500, 900],
 ])
-lines = lines + 300
+display_lines(lines)
 
-for l in lines:
-    draw_line(l[0], l[1], l[2], l[3])
-pygame.display.flip()
+time.sleep(1)
 
-translate = numpy.array([
-    [1,0,0],
-    [0,1,0],
-    [100,100,1],
-])
-for l in lines:
-    result = numpy.array([l[0],l[1],1]).dot(translate)
-    l[0], l[1] = result[0], result[1]
-    result = numpy.array([l[2],l[3],1]).dot(translate)
-    l[2], l[3] = result[0], result[1]
-    draw_line(l[0], l[1], l[2], l[3])
-pygame.display.flip()
+# Up and to the right
+apply_transformation(lines, translate(100, 100))
+display_lines(lines)
 
-translate = numpy.array([
-    [1,0,0],
-    [0,1,0],
-    [100,-100,1],
-])
-for l in lines:
-    result = numpy.array([l[0],l[1],1]).dot(translate)
-    l[0], l[1] = result[0], result[1]
-    result = numpy.array([l[2],l[3],1]).dot(translate)
-    l[2], l[3] = result[0], result[1]
-    draw_line(l[0], l[1], l[2], l[3])
-pygame.display.flip()
+time.sleep(1)
 
-translate = numpy.array([
-    [1,0,0],
-    [0,1,0],
-    [-300,-200,1],
-])
-for l in lines:
-    result = numpy.array([l[0],l[1],1]).dot(translate)
-    l[0], l[1] = result[0], result[1]
-    result = numpy.array([l[2],l[3],1]).dot(translate)
-    l[2], l[3] = result[0], result[1]
-    draw_line(l[0], l[1], l[2], l[3])
-pygame.display.flip()
+# Down and to the right
+apply_transformation(lines, translate(100, -100))
+display_lines(lines)
 
-translate = numpy.array([
-    [1,0,0],
-    [0,1,0],
-    [-100,100,1],
-])
-for l in lines:
-    result = numpy.array([l[0],l[1],1]).dot(translate)
-    l[0], l[1] = result[0], result[1]
-    result = numpy.array([l[2],l[3],1]).dot(translate)
-    l[2], l[3] = result[0], result[1]
-    draw_line(l[0], l[1], l[2], l[3])
-pygame.display.flip()
+time.sleep(1)
 
+# Down and to the left
+apply_transformation(lines, translate(-200, -300))
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the left
+apply_transformation(lines, translate(-100, 100))
+display_lines(lines)
+
+time.sleep(1)
+
+# Clear previous lines
+display_lines(lines, clear_screen=True)
+
+# to keep displaying the image, the program has to keep running until we shut it down
+running = True
 while running:
     check_for_exit()
     # while running
