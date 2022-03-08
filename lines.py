@@ -14,6 +14,7 @@ group.add_argument("-simple", "-s", action="store_true", help="Use Simple Line d
 group.add_argument("-bresenham", "-b", action="store_true", help="Use Bresenham drawing algorithm")
 parser.add_argument("-grid", "-g", action="store_true", help="Toggles grid lines. Off by default")
 parser.add_argument("-radians", "-r", action="store_true", help="Use radians instead of degrees.")
+parser.add_argument("-clear_screen", "-cs", action="store_true", help="Refresh the window after applying a transformation. Off by default.")
 parser.add_argument('inputFile', type=str, help='Input file containing lines.')
 print("")
 
@@ -244,8 +245,8 @@ def apply_transformation(datalines, matrix):
 
 # Scan converts the specified lines.
 # Optionally clears the screen beforehand.
-def display_lines(datalines, clear_screen=False):
-    if clear_screen:
+def display_lines(datalines):
+    if args.clear_screen:
         screen.fill(bg_color)
         if args.grid:
             draw_gridlines(update_screen=False)
@@ -444,18 +445,22 @@ output_lines(lines, "output.txt")
 running = True
 while running:
     userInput = input("Enter a command, or type help:\n")
-    if userInput == 'exit' or userInput == 'quit' or userInput == 'q':
+    command = userInput.split()
+    #print(command)
+    if command[0] == 'exit' or command[0] == 'quit' or command[0] == 'q':
         cleanup()
-    elif userInput == 'help' or userInput == 'h':
+    elif command[0] == 'help' or command[0] == 'h':
         print("")
         print("translate, t \t\t tx ty")
         print("basic_scale, bs \t sx sy")
-        print("basic_rotate, bs \t angle")
+        print("basic_rotate, br \t angle")
         print("scale, s \t\t sx sy cx cy")
         print("rotate, r \t\t angle cx cy")
         print("output, o \t\t filename")
+        print("radians")
+        print("degrees")
         print("")
-    elif 'translate' in userInput or userInput[:1]=='t':
+    elif command[0]=="translate" or command[0]=='t':
         command = userInput.split()
         if len(command) != 3:
             print("Invalid command.")
@@ -469,7 +474,7 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'basic_scale' in userInput or userInput[:2]=='bs':
+    elif command[0]=='basic_scale' or command[0]=='bs':
         command = userInput.split()
         if len(command) != 3:
             print("Invalid command.")
@@ -483,7 +488,7 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'basic_rotate' in userInput or userInput[:2]=='br':
+    elif command[0]=='basic_rotate' or command[0]=='br':
         command = userInput.split()
         if len(command) != 2:
             print("Invalid command.")
@@ -498,7 +503,7 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'scale' in userInput or userInput[:1]=="s":
+    elif command[0]=='scale' or command[0]=="s":
         command = userInput.split()
         if len(command) != 5:
             print("Invalid command.")
@@ -512,7 +517,7 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'rotate' in userInput or userInput[:1]=="r":
+    elif command[0]=='rotate' or command[0]=="r":
         command = userInput.split()
         if len(command) != 4:
             print("Invalid command.")
@@ -527,7 +532,7 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'output' in userInput or userInput[:1]=='o':
+    elif command[0]=='output' or command[0]=='o':
         command = userInput.split()
         if len(command) != 2:
             print("Invalid command.")
@@ -535,6 +540,12 @@ while running:
         else:
             output_lines(lines, command[1])
             print("")
+    elif command[0]=='degrees':
+        args.radians = False
+        print("")
+    elif command[0]=='radians':
+        args.radians = True
+        print("")
     else:
         print("Invalid command.")
         print("")
