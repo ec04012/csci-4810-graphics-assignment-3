@@ -8,13 +8,14 @@ import argparse
 import numpy
 
 # read command line arguments
-print("")
 parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument("-simple", "-s", action="store_true", help="Use Simple Line drawing algorithm")
 group.add_argument("-bresenham", "-b", action="store_true", help="Use Bresenham drawing algorithm")
+parser.add_argument("-grid", "-g", action="store_true", help="Toggles grid lines. Off by default")
 parser.add_argument('inputFile', type=str, help='Input file containing lines.')
 
+print("")
 if len(sys.argv)==1:
     parser.print_help()
     # parser.print_usage() # for just the usage line
@@ -32,7 +33,6 @@ if not args.bresenham and not args.simple:
     print("")
     parser.print_help()
     exit(0)
-print("")
 
 # color tuples, used for testing
 red = (255,0,0)
@@ -217,7 +217,8 @@ def cleanup():
     sys.exit()
 
 # draws gridlines that are 100 pixels apart
-def draw_gridlines():
+# update_screen = update screen when after exit, On by default
+def draw_gridlines(update_screen=True):
     # draw in buffer
     for i in range(0,10):
         simple_alg(i * 100, 0, i * 100, 1000, color=gray)
@@ -255,7 +256,8 @@ def apply_transformation(datalines, matrix):
 def display_lines(datalines, clear_screen=False):
     if clear_screen:
         screen.fill(bg_color)
-        draw_gridlines()
+        if args.grid:
+            draw_gridlines(update_screen=False)
     for l in datalines:
         draw_line(l[0], l[1], l[2], l[3])
     pygame.display.flip()
@@ -335,7 +337,8 @@ def output_lines(datalines, fileName):
 
 # Right triangle
 lines = input_lines(args.inputFile)
-draw_gridlines()
+if args.grid:
+    draw_gridlines(update_screen=True)
 display_lines(lines)
 print("Original figure")
 print(lines)
