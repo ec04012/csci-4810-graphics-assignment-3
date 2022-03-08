@@ -1,5 +1,3 @@
-# importing Image class from PIL package
-from filecmp import clear_cache
 import pygame
 import pygame.gfxdraw
 from pygame.locals import (KEYDOWN, K_ESCAPE)
@@ -10,21 +8,30 @@ import argparse
 import numpy
 
 # read command line arguments
+print("")
 parser = argparse.ArgumentParser()
-parser.add_argument("-n", type=int, help="Number of random lines to draw. Default = 10", default=10)
 parser.add_argument("-simple", "-s", action="store_true", help="Use Simple Line drawing algorithm")
 parser.add_argument("-bresenham", "-b", action="store_true", help="Use Bresenham drawing algorithm")
+parser.add_argument('inputFile', type=str, help='Input file containing lines.')
+
+if len(sys.argv)==1:
+    parser.print_help()
+    # parser.print_usage() # for just the usage line
+    parser.exit()
+
 args = parser.parse_args()
-print("")
 # check for valid cmd args
 if args.simple and args.bresenham:
-    print("ERROR: Please select ONLY one algorithm, not both.")
+    print("ERROR: Please only select one algorithm.")
+    print("")
     parser.print_help()
     exit(0)
 if not args.bresenham and not args.simple:
     print("ERROR: please select an algorithm.")
+    print("")
     parser.print_help()
     exit(0)
+print("")
 
 # color tuples, used for testing
 red = (255,0,0)
@@ -289,17 +296,35 @@ def rotation(angle, cx, cy):
     t_matrix = translate(-cx, -cy).dot(basic_rotation(angle)).dot(translate(cx, cy))
     return t_matrix
 
+# Reads the specified file and returns a numpy array
+def input_lines(fileName):
+    # Read file
+    with open(fileName, "r") as f:
+        # Split file by line
+        dataLines = f.read().split("\n")
+
+    # Split lines, and convert into lists
+    dataLines = list(map(lambda e : e.split(), dataLines))
+    # Remove empty lines
+    dataLines = list(filter(lambda e : e != [], dataLines))
+
+    # Check if every line has 4 entries
+    if any(len(e) != 4 for e in dataLines):
+        print("Improper input file 1")
+
+    # Convert to floats
+    # This line does the same thing as the for loop, but the loop is more readable
+    # inputLines = list(map(lambda e : list(map(lambda f : float(f), e)), inputLines))
+    try:
+        for i in range(0, len(dataLines)):
+            for j in range(0, len(dataLines[i])):
+                dataLines[i][j] = float(dataLines[i][j])
+    except Exception as e:
+        print("Improper input file 2")
+    return numpy.array(dataLines)
+
 # Right triangle
-lines = numpy.array([
-    [100, 100, 200, 100],
-    [200, 100, 200, 500],
-    [100, 100, 200, 500],
-])
-lines = numpy.array([
-    [500.0, 100.0, 800.0, 100.0],
-    [500.0, 100.0, 500.0, 200.0],
-    [500.0, 200.0, 800.0, 100.0]
-])
+lines = input_lines(args.inputFile)
 draw_gridlines()
 display_lines(lines)
 print("Original figure")
