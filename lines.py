@@ -1,7 +1,7 @@
 import pygame
 import pygame.gfxdraw
 from pygame.locals import (KEYDOWN, K_ESCAPE)
-from math import trunc, sin, cos, pi
+from math import trunc, sin, cos, pi, radians
 import sys
 import time
 import argparse
@@ -13,26 +13,17 @@ group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument("-simple", "-s", action="store_true", help="Use Simple Line drawing algorithm")
 group.add_argument("-bresenham", "-b", action="store_true", help="Use Bresenham drawing algorithm")
 parser.add_argument("-grid", "-g", action="store_true", help="Toggles grid lines. Off by default")
+parser.add_argument("-radians", "-r", action="store_true", help="Use radians instead of degrees.")
 parser.add_argument('inputFile', type=str, help='Input file containing lines.')
-
 print("")
+
+# If user does not specify input file, display help message
 if len(sys.argv)==1:
     parser.print_help()
     # parser.print_usage() # for just the usage line
     parser.exit()
 
 args = parser.parse_args()
-# check for valid cmd args
-if args.simple and args.bresenham:
-    print("ERROR: Please only select one algorithm.")
-    print("")
-    parser.print_help()
-    exit(0)
-if not args.bresenham and not args.simple:
-    print("ERROR: please select an algorithm.")
-    print("")
-    parser.print_help()
-    exit(0)
 
 # color tuples, used for testing
 red = (255,0,0)
@@ -329,20 +320,26 @@ def input_lines(fileName):
 # Takes the specified numpy array and writes to the specified file
 def output_lines(datalines, fileName):
     # Read file
+    print("Writing to " + fileName)
     with open(fileName, "w") as f:
         for row in datalines:
             row = map(lambda e : str(e), row)
             f.write(' '.join(row))
             f.write("\n")
 
-# Right triangle
+# Read from file
 lines = input_lines(args.inputFile)
+# Draw grid if requested
 if args.grid:
     draw_gridlines(update_screen=True)
+# draw lines from file
 display_lines(lines)
+# print original coordinates
 print("Original figure")
 print(lines)
+print("")
 
+"""
 time.sleep(1)
 
 # Up and to the right
@@ -442,9 +439,102 @@ display_lines(lines)
 time.sleep(1)
 
 output_lines(lines, "output.txt")
-
+"""
 # to keep displaying the image, the program has to keep running until we shut it down
 running = True
 while running:
-    check_for_exit()
+    userInput = input("Enter a command, or type help:\n")
+    if userInput == 'exit' or userInput == 'quit' or userInput == 'q' or userInput == 'e':
+        cleanup()
+    elif userInput == 'help' or userInput == 'h':
+        print("")
+        print("translate, t \t\t tx ty")
+        print("basic_scale, bs \t sx sy")
+        print("basic_rotate, bs \t angle")
+        print("scale, s \t\t sx sy cx cy")
+        print("rotate, r \t\t angle cx cy")
+        print("outputLines, o \t\t filename")
+        print("")
+    elif 'translate ' in userInput or 't ' in userInput:
+        command = userInput.split()
+        if len(command) != 3:
+            print("Invalid command.")
+            print("")
+        else:
+            try:
+                command[1], command[2] = float(command[1]), float(command[2])
+                apply_transformation(lines, translate(command[1], command[2]))
+                display_lines(lines)
+                print("")
+            except ValueError:
+                print("Invalid command.")
+                print("")
+    elif 'basic_scale ' in userInput or 'bs ' in userInput:
+        command = userInput.split()
+        if len(command) != 3:
+            print("Invalid command.")
+            print("")
+        else:
+            try:
+                command[1], command[2] = float(command[1]), float(command[2])
+                apply_transformation(lines, basic_scale(command[1], command[2]))
+                display_lines(lines)
+                print("")
+            except ValueError:
+                print("Invalid command.")
+                print("")
+    elif 'basic_rotate ' in userInput or 'br ' in userInput:
+        command = userInput.split()
+        if len(command) != 2:
+            print("Invalid command.")
+            print("")
+        else:
+            try:
+                command[1] = float(command[1])
+                command[1] = command[1] if args.radians else radians(command[1])
+                apply_transformation(lines, basic_rotation(command[1]))
+                display_lines(lines)
+                print("")
+            except ValueError:
+                print("Invalid command.")
+                print("")
+    elif 'scale ' in userInput or 's ' in userInput:
+        command = userInput.split()
+        if len(command) != 5:
+            print("Invalid command.")
+        else:
+            try:
+                command[1], command[2], command[3], command[4] = float(command[1]), float(command[2]), int(command[3]), int(command[4])
+                apply_transformation(lines, scale(command[1], command[2], command[3], command[4]))
+                display_lines(lines)
+                print("")
+            except ValueError:
+                print("Invalid command.")
+                print("")
+    elif 'rotate ' in userInput or 'r ' in userInput:
+        command = userInput.split()
+        if len(command) != 4:
+            print("Invalid command.")
+            print("")
+        else:
+            try:
+                command[1], command[2], command[3] = float(command[1]), int(command[2]), int(command[3])
+                command[1] = command[1] if args.radians else radians(command[1])
+                apply_transformation(lines, rotation(command[1], command[2], command[3]))
+                display_lines(lines)
+                print("")
+            except ValueError:
+                print("Invalid command.")
+                print("")
+    elif 'outputLines ' in userInput or 'o ' in userInput:
+        command = userInput.split()
+        if len(command) != 2:
+            print("Invalid command.")
+            print("")
+        else:
+            output_lines(lines, command[1])
+            print("")
+    else:
+        print("Invalid command.")
+        print("")
     # while running
