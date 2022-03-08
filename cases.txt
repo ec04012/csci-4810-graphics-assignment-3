@@ -1,50 +1,101 @@
-            # Perfectly horizontal lines
-            # left to right
-            simple_alg(100,200, 900, 200, color=red)
-            # right to left
-            simple_alg(900,700, 100, 700, color=green)
+"""
+time.sleep(1)
 
-            # perfectly vertical lines
-            # top to bottom
-            simple_alg(600,100, 600, 900, color=blue)
-            # bottom to top
-            simple_alg(200,900, 200, 100, color=black)
+# Up and to the right
+apply_transformation(lines, scale(2, 2, 500, 100))
+print("Scale 2")
+print(lines)
+display_lines(lines)
 
-# ======================================================================
+time.sleep(1)
 
-            # Perfectly diagonal lines
-            # bottom left to top right
-            simple_alg(100,800, 800, 100, color=red)
-            # top right to bottom left
-            simple_alg(900,200, 200, 900, color=green)
+# Up and to the right
+apply_transformation(lines, scale(.75, .75, 500, 100))
+print("Scale .75")
+print(lines)
+display_lines(lines)
 
-            # top left to bottom right
-            simple_alg(200,100, 900, 800, color=blue)
-            # bottom right to top left
-            simple_alg(800,900, 100, 200, color=black)
+time.sleep(1)
 
-# ======================================================================
+# Up and to the right
+apply_transformation(lines, rotation(-pi/6, 500, 100))
+print("Rotate 30° ccw")
+print(lines)
+display_lines(lines)
 
-            # slanted horizontals
-            # up and to the right
-            simple_alg(100,300, 800, 100, color=red)
-            # down and to the left
-            simple_alg(800,200, 100, 400, color=green)
+time.sleep(1)
 
-            # down and to the right
-            simple_alg(100,500, 800, 700, color=blue)
-            # up and to the left
-            simple_alg(800,800, 100, 600, color=black)
+# Up and to the right
+apply_transformation(lines, rotation(pi/6, 500, 100))
+print("Rotate 30° cw")
+print(lines)
+display_lines(lines)
 
-# ======================================================================
+time.sleep(1)
 
-            # slanted vertical
-            # up and to the right
-            simple_alg(100,900, 300, 100, color=red)
-            # down and to the left
-            simple_alg(500,100, 300, 900, color=green)
+# Up and to the right
+apply_transformation(lines, rotation(-pi/6, 500, 100))
+print("Rotate 30° ccw")
+print(lines)
+display_lines(lines)
 
-            # down and to the right
-            simple_alg(500,100, 700, 900, color=blue)
-            # up and to the left
-            simple_alg(900,900, 600, 100, color=black)
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, rotation(pi/6, 500, 100))
+print("Rotate 30° cw")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, rotation(-pi/6, 500, 100))
+print("Rotate 30° ccw")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, rotation(pi/6, 500, 100))
+print("Rotate 30° cw")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, basic_rotation(-pi/3))
+print("Rotate 60° ccw")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, basic_rotation(pi/6))
+print("Rotate 30° cw")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, translate(200, 200))
+print("Translate Up and to the right")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, translate(-500, -500))
+print("Translate down and to the left")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+output_lines(lines, "output.txt")
+"""
