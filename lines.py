@@ -3,7 +3,7 @@ from filecmp import clear_cache
 import pygame
 import pygame.gfxdraw
 from pygame.locals import (KEYDOWN, K_ESCAPE)
-from math import trunc
+from math import trunc, sin, cos, pi
 import sys
 import time
 import argparse
@@ -270,42 +270,69 @@ def scale(sx, sy, cx, cy):
     t_matrix = translate(-cx, -cy).dot(basic_scale(sx, sy)).dot(translate(cx, cy))
     return t_matrix
 
+# Rotates cw if angle is positive,
+# Rotate ccw if angle is negative
+def basic_rotation(angle):
+    t_matrix = numpy.array([
+        [cos(angle),-sin(angle),0],
+        [sin(angle), cos(angle),0],
+        [0,0,1],
+    ])
+    return t_matrix
+
+# Rotates cw if angle is positive,
+# Rotate ccw if angle is negative
+# cx, cy is center of rotation
+def rotation(angle, cx, cy):
+    t_matrix = translate(-cx, -cy).dot(basic_rotation(angle)).dot(translate(cx, cy))
+    return t_matrix
+
 # Right triangle
 lines = numpy.array([
     [100, 100, 200, 100],
     [200, 100, 200, 500],
     [100, 100, 200, 500],
 ])
+lines = numpy.array([
+    [500, 100, 800, 100],
+    [500, 100, 500, 200],
+    [500, 200, 800, 100]
+])
+draw_gridlines()
+display_lines(lines)
+print("Original figure")
+print(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, rotation(-pi/6, 500, 100))
+print("Rotate 30° ccw")
+print(lines)
 display_lines(lines)
 
 time.sleep(1)
 
 # Up and to the right
-apply_transformation(lines, scale(2, 2, 100, 100))
-print(lines)
-display_lines(lines)
-
-time.sleep(1)
-
-apply_transformation(lines, scale(.5, .5, 100, 100))
+apply_transformation(lines, rotation(pi/6, 500, 100))
+print("Rotate 30° cw")
 print(lines)
 display_lines(lines, clear_screen=True)
+draw_gridlines()
 
 time.sleep(1)
 
-apply_transformation(lines, scale(3, 1, 100, 100))
+# Up and to the right
+apply_transformation(lines, basic_rotation(-pi/3))
+print("Rotate 60° ccw")
 print(lines)
 display_lines(lines)
 
 time.sleep(1)
 
-apply_transformation(lines, translate(0,300))
-print(lines)
-display_lines(lines)
-
-time.sleep(1)
-
-apply_transformation(lines, scale(1, -1, 100, 400))
+# Up and to the right
+apply_transformation(lines, basic_rotation(pi/6))
+print("Rotate 30° cw")
 print(lines)
 display_lines(lines)
 
