@@ -223,6 +223,7 @@ def draw_gridlines():
 # color is a tuple containing rgb values. default is red
 # algorithm is specified using cmd args
 def draw_line(x0, y0, x1, y1, color=red):
+    x0, y0, x1, y1 = round(x0), round(y0), round(x1), round(y1)
     if args.simple:
         simple_alg(x0, y0, x1, y1, color)
     elif args.bresenham:
@@ -246,6 +247,7 @@ def apply_transformation(datalines, matrix):
 def display_lines(datalines, clear_screen=False):
     if clear_screen:
         screen.fill(bg_color)
+        draw_gridlines()
     for l in datalines:
         draw_line(l[0], l[1], l[2], l[3])
     pygame.display.flip()
@@ -294,14 +296,30 @@ lines = numpy.array([
     [100, 100, 200, 500],
 ])
 lines = numpy.array([
-    [500, 100, 800, 100],
-    [500, 100, 500, 200],
-    [500, 200, 800, 100]
+    [500.0, 100.0, 800.0, 100.0],
+    [500.0, 100.0, 500.0, 200.0],
+    [500.0, 200.0, 800.0, 100.0]
 ])
 draw_gridlines()
 display_lines(lines)
 print("Original figure")
 print(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, scale(2, 2, 500, 100))
+print("Scale 2")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, scale(.75, .75, 500, 100))
+print("Scale .75")
+print(lines)
+display_lines(lines)
 
 time.sleep(1)
 
@@ -317,8 +335,39 @@ time.sleep(1)
 apply_transformation(lines, rotation(pi/6, 500, 100))
 print("Rotate 30° cw")
 print(lines)
-display_lines(lines, clear_screen=True)
-draw_gridlines()
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, rotation(-pi/6, 500, 100))
+print("Rotate 30° ccw")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, rotation(pi/6, 500, 100))
+print("Rotate 30° cw")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, rotation(-pi/6, 500, 100))
+print("Rotate 30° ccw")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, rotation(pi/6, 500, 100))
+print("Rotate 30° cw")
+print(lines)
+display_lines(lines)
 
 time.sleep(1)
 
@@ -333,6 +382,22 @@ time.sleep(1)
 # Up and to the right
 apply_transformation(lines, basic_rotation(pi/6))
 print("Rotate 30° cw")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, translate(200, 200))
+print("Translate Up and to the right")
+print(lines)
+display_lines(lines)
+
+time.sleep(1)
+
+# Up and to the right
+apply_transformation(lines, translate(-500, -500))
+print("Translate down and to the left")
 print(lines)
 display_lines(lines)
 
