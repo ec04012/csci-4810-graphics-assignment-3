@@ -10,8 +10,9 @@ import numpy
 # read command line arguments
 print("")
 parser = argparse.ArgumentParser()
-parser.add_argument("-simple", "-s", action="store_true", help="Use Simple Line drawing algorithm")
-parser.add_argument("-bresenham", "-b", action="store_true", help="Use Bresenham drawing algorithm")
+group = parser.add_mutually_exclusive_group(required=True)
+group.add_argument("-simple", "-s", action="store_true", help="Use Simple Line drawing algorithm")
+group.add_argument("-bresenham", "-b", action="store_true", help="Use Bresenham drawing algorithm")
 parser.add_argument('inputFile', type=str, help='Input file containing lines.')
 
 if len(sys.argv)==1:
