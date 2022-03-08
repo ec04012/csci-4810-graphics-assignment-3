@@ -3,6 +3,8 @@ Run lines.py.
 
 Run lines.py -h for help.
 
+[Video Demonstration](https://youtu.be/sRYTAZT58OA)
+
 ## Sources:
 1. https://www.programiz.com/python-programming/matrix
 2. https://www.w3schools.com/python/ref_math_sin.asp
