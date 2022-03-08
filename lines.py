@@ -444,7 +444,7 @@ output_lines(lines, "output.txt")
 running = True
 while running:
     userInput = input("Enter a command, or type help:\n")
-    if userInput == 'exit' or userInput == 'quit' or userInput == 'q' or userInput == 'e':
+    if userInput == 'exit' or userInput == 'quit' or userInput == 'q':
         cleanup()
     elif userInput == 'help' or userInput == 'h':
         print("")
@@ -453,9 +453,9 @@ while running:
         print("basic_rotate, bs \t angle")
         print("scale, s \t\t sx sy cx cy")
         print("rotate, r \t\t angle cx cy")
-        print("outputLines, o \t\t filename")
+        print("output, o \t\t filename")
         print("")
-    elif 'translate ' in userInput or 't ' in userInput:
+    elif 'translate' in userInput or userInput[:1]=='t':
         command = userInput.split()
         if len(command) != 3:
             print("Invalid command.")
@@ -469,7 +469,7 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'basic_scale ' in userInput or 'bs ' in userInput:
+    elif 'basic_scale' in userInput or userInput[:2]=='bs':
         command = userInput.split()
         if len(command) != 3:
             print("Invalid command.")
@@ -483,7 +483,7 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'basic_rotate ' in userInput or 'br ' in userInput:
+    elif 'basic_rotate' in userInput or userInput[:2]=='br':
         command = userInput.split()
         if len(command) != 2:
             print("Invalid command.")
@@ -498,10 +498,11 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'scale ' in userInput or 's ' in userInput:
+    elif 'scale' in userInput or userInput[:1]=="s":
         command = userInput.split()
         if len(command) != 5:
             print("Invalid command.")
+            print("")
         else:
             try:
                 command[1], command[2], command[3], command[4] = float(command[1]), float(command[2]), int(command[3]), int(command[4])
@@ -511,7 +512,7 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'rotate ' in userInput or 'r ' in userInput:
+    elif 'rotate' in userInput or userInput[:1]=="r":
         command = userInput.split()
         if len(command) != 4:
             print("Invalid command.")
@@ -526,7 +527,7 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
-    elif 'outputLines ' in userInput or 'o ' in userInput:
+    elif 'output' in userInput or userInput[:1]=='o':
         command = userInput.split()
         if len(command) != 2:
             print("Invalid command.")
