@@ -324,6 +324,15 @@ def input_lines(fileName):
         print("Improper input file 2")
     return numpy.array(dataLines)
 
+# Takes the specified numpy array and writes to the specified file
+def output_lines(datalines, fileName):
+    # Read file
+    with open(fileName, "w") as f:
+        for row in datalines:
+            row = map(lambda e : str(e), row)
+            f.write(' '.join(row))
+            f.write("\n")
+
 # Right triangle
 lines = input_lines(args.inputFile)
 draw_gridlines()
@@ -428,6 +437,8 @@ print(lines)
 display_lines(lines)
 
 time.sleep(1)
+
+output_lines(lines, "output.txt")
 
 # to keep displaying the image, the program has to keep running until we shut it down
 running = True
