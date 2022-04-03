@@ -43,7 +43,7 @@ magenta = (255,255,0)
 
 # Settings 
 bg_color = white
-window_name = "CSCI 4810 Assignment 2"
+window_name = "CSCI 4810 Assignment 3"
 window_size_x = 1000
 window_size_y = 1000
 

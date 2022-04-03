@@ -1,11 +1,6 @@
-# csci-4810-graphics-assignment-1
-Run lines.py.
+# CSCI-4810-graphics-assignment-3
 
-Run lines.py -h for help.
-
-[Video Demonstration](https://youtu.be/sRYTAZT58OA)
-
-## Sources:
+## Sources from Assignment 2:
 1. https://www.programiz.com/python-programming/matrix
 2. https://www.w3schools.com/python/ref_math_sin.asp
 3. https://www.w3schools.com/python/ref_string_split.asp
