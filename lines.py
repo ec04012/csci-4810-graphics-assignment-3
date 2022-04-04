@@ -235,13 +235,13 @@ def draw_line(x0, y0, x1, y1, color=red):
 def apply_transformation(datalines, matrix):
     for line in datalines:
         # Apply matrix to first point
-        p1 = numpy.array([line[0], line[1], 1])
+        p1 = numpy.array([line[0], line[1], line[2], 1])
         result = p1.dot(matrix)
-        line[0], line[1] = result[0], result[1]
+        line[0], line[1], line[2] = result[0], result[1], result[2]
         # Apply matrix to second point
-        p2 = numpy.array([line[2], line[3], 1])
+        p2 = numpy.array([line[3], line[4], line[5], 1])
         result = p2.dot(matrix)
-        line[2], line[3] = result[0], result[1]
+        line[3], line[4], line[5] = result[0], result[1], result[2]
 
 # Scan converts the specified lines.
 # Optionally clears the screen beforehand.
@@ -303,19 +303,19 @@ def input_lines(fileName):
     # Remove empty lines
     dataLines = list(filter(lambda e : e != [], dataLines))
 
-    # Check if every line has 4 entries
-    if any(len(e) != 4 for e in dataLines):
-        print("Improper input file 1")
+    # Check if every line has 6 entries
+    if any(len(e) != 6 for e in dataLines):
+        print("Improper input file")
 
     # Convert to floats
-    # This line does the same thing as the for loop, but the loop is more readable
+    # The line below does the same thing as the for loop, but the loop is more readable
     # inputLines = list(map(lambda e : list(map(lambda f : float(f), e)), inputLines))
     try:
         for i in range(0, len(dataLines)):
             for j in range(0, len(dataLines[i])):
                 dataLines[i][j] = float(dataLines[i][j])
     except Exception as e:
-        print("Improper input file 2")
+        print("Error when converting inputFile into floats")
     return numpy.array(dataLines)
 
 # Takes the specified numpy array and writes to the specified file
@@ -329,20 +329,86 @@ def output_lines(datalines, fileName):
             f.write("\n")
 
 # Read from file
-lines = input_lines(args.inputFile)
+# lines = input_lines(args.inputFile)
 # Draw grid if requested
-if args.grid:
-    draw_gridlines(update_screen=True)
 # draw lines from file
-display_lines(lines)
+#display_lines(lines)
 # print original coordinates
-print("Original figure")
-print(lines)
-print("")
+#print("Original figure")
+#print(lines)
+#print("")
+
+
+t0 = numpy.array([
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0],
+])
 
 # to keep displaying the image, the program has to keep running until we shut it down
+draw_line(100, 100, 300, 400)
+pygame.display.flip()
+xe, ye, ze = 6, 8, 7.5
+t1 = numpy.array([
+    [  1,  0,  0, 0],
+    [  0,  1,  0, 0],
+    [  0,  0,  1, 0],
+    [-xe,-ye,-ze, 1],
+])
+t2 = numpy.array([
+    [1, 0, 0, 0],
+    [0, 0,-1, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 1],
+])
+t3 = numpy.array([
+    [-.8, 0, .6, 0],
+    [  0, 1,  0, 0],
+    [-.6, 0,-.8, 0],
+    [  0, 0,  0, 1],
+])
+t4 = numpy.array([
+    [1,  0, 0, 0],
+    [0, .8,.6, 0],
+    [0,-.6,.8, 0],
+    [0,  0, 0, 1],
+])
+t5 = numpy.array([
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0,-1, 0],
+    [0, 0, 0, 1],
+])
+#====================================
+n = numpy.array([
+    [  4,  0,  0, 0],
+    [  0,  4,  0, 0],
+    [  0,  0,  1, 0],
+    [  0,  0,  0, 1],
+])
+#====================================
+vn = t1.dot(t2).dot(t3).dot(t4).dot(t5).dot(n)
+print(vn)
+
+datalines = input_lines("cube.txt")
+apply_transformation(datalines, vn)
+
+vsx = vsy = vcx = vcy = 200
+
+for line in datalines:
+    xs1 = line[0]/line[2] * vsx + vcx
+    ys1 = line[1]/line[2] * vsy + vcy
+    xs2 = line[3]/line[5] * vsx + vcx
+    ys2 = line[4]/line[5] * vsy + vcy
+    print("%s %s %s %s" % (xs1, ys1, xs2, ys2))
+    draw_line(xs1, ys1, xs2, ys2)
+pygame.display.flip()
+
 running = True
 while running:
+    check_for_exit()
+    """
     userInput = input("Enter a command, or type help:\n")
     command = userInput.split()
     #print(command)
@@ -449,3 +515,4 @@ while running:
         print("Invalid command.")
         print("")
     # while running
+    """
