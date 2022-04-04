@@ -213,11 +213,13 @@ def cleanup():
 # update_screen = update screen when after exit, On by default
 def draw_gridlines(update_screen=True):
     # draw in buffer
-    for i in range(0,6):
+    for i in range(0, window_size_x // 100):
         simple_alg(i * 100, 0, i * 100, 1000, color=gray)
+    for i in range(0, window_size_y // 100): 
         simple_alg(0, i * 100, 1000, i * 100, color=gray)
-    # update displau
-    pygame.display.flip()
+    # update display
+    if update_screen:
+        pygame.display.flip()
 
 # draws the specified line in the specified color using the specified algorithm
 # x0 and y0 are the coordinates of the first point
@@ -416,7 +418,7 @@ datalines = input_lines("cube.txt")
 axis_x = input_lines("axis_x.txt")
 axis_y = input_lines("axis_y.txt")
 axis_z = input_lines("axis_z.txt")
-draw_gridlines()
+draw_gridlines(update_screen=False)
 draw_lines(axis_x, xe, ye, ze, color=red)
 draw_lines(axis_y, xe, ye, ze, color=blue)
 draw_lines(axis_z, xe, ye, ze, color=green)
@@ -428,7 +430,7 @@ for i in range(0, 40):
     time.sleep(.05)
     xe = xe + .77
     screen.fill(bg_color)
-    draw_gridlines()
+    draw_gridlines(update_screen=False)
     datalines = input_lines("cube.txt")
     axis_x = input_lines("axis_x.txt")
     axis_y = input_lines("axis_y.txt")
@@ -444,7 +446,7 @@ for i in range(0, 40):
     time.sleep(.05)
     ye = ye + .77
     screen.fill(bg_color)
-    draw_gridlines()
+    draw_gridlines(update_screen=False)
     datalines = input_lines("cube.txt")
     axis_x = input_lines("axis_x.txt")
     axis_y = input_lines("axis_y.txt")
@@ -460,7 +462,7 @@ for i in range(0, 40):
     time.sleep(.05)
     ze = ze + .77
     screen.fill(bg_color)
-    draw_gridlines()
+    draw_gridlines(update_screen=False)
     datalines = input_lines("cube.txt")
     axis_x = input_lines("axis_x.txt")
     axis_y = input_lines("axis_y.txt")
@@ -476,7 +478,7 @@ for i in range(0, 40):
     time.sleep(.05)
     xe = xe - 1.51
     screen.fill(bg_color)
-    draw_gridlines()
+    draw_gridlines(update_screen=False)
     datalines = input_lines("cube.txt")
     axis_x = input_lines("axis_x.txt")
     axis_y = input_lines("axis_y.txt")
@@ -492,7 +494,7 @@ for i in range(0, 40):
     time.sleep(.05)
     ye = ye - 1.51
     screen.fill(bg_color)
-    draw_gridlines()
+    draw_gridlines(update_screen=False)
     datalines = input_lines("cube.txt")
     axis_x = input_lines("axis_x.txt")
     axis_y = input_lines("axis_y.txt")
@@ -508,7 +510,7 @@ for i in range(0, 40):
     time.sleep(.05)
     ze = ze - 1.51
     screen.fill(bg_color)
-    draw_gridlines()
+    draw_gridlines(update_screen=False)
     datalines = input_lines("cube.txt")
     axis_x = input_lines("axis_x.txt")
     axis_y = input_lines("axis_y.txt")
