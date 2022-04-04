@@ -257,12 +257,13 @@ def display_lines(datalines):
         draw_line(l[0], l[1], l[2], l[3])
     pygame.display.flip()
 
-def translate(tx, ty):
+def translate(tx, ty, tz):
     t_matrix = numpy.array([
-        [1,0,0],
-        [0,1,0],
-        [tx,ty,1],
-    ])
+    [ 1, 0, 0, 0],
+    [ 0, 1, 0, 0],
+    [ 0, 0, 1, 0],
+    [tx,ty,tz, 1],
+])
     return t_matrix
 
 def basic_scale(sx, sy):
@@ -423,71 +424,54 @@ def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
 
 xe, ye, ze = 6, 8, 7.5
 datalines = input_lines("cube.txt")
-draw_gridlines(update_screen=False)
 draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-for i in range(0, 40):
-    time.sleep(.05)
-    xe = xe + .77
-    screen.fill(bg_color)
-    draw_gridlines(update_screen=False)
-    datalines = input_lines("cube.txt")
-    draw_axes()
-    draw_lines(datalines, xe, ye, ze, color=med_gray)
+apply_transformation(datalines, translate(2, 0, 0))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-for i in range(0, 40):
-    time.sleep(.05)
-    ye = ye + .77
-    screen.fill(bg_color)
-    draw_gridlines(update_screen=False)
-    datalines = input_lines("cube.txt")
-    draw_axes()
-    draw_lines(datalines, xe, ye, ze, color=med_gray)
+apply_transformation(datalines, translate(0, 2, 0))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-for i in range(0, 40):
-    time.sleep(.05)
-    ze = ze + .77
-    screen.fill(bg_color)
-    draw_gridlines(update_screen=False)
-    draw_axes()
-    draw_lines(datalines, xe, ye, ze, color=med_gray)
+apply_transformation(datalines, translate(0, 0, 2))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-for i in range(0, 40):
-    time.sleep(.05)
-    xe = xe - 1.51
-    screen.fill(bg_color)
-    draw_gridlines(update_screen=False)
-    draw_axes()
-    draw_lines(datalines, xe, ye, ze, color=med_gray)
+screen.fill(bg_color)
+pygame.display.flip()
+apply_transformation(datalines, translate(-2, -2, -2))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-for i in range(0, 40):
-    time.sleep(.05)
-    ye = ye - 1.51
-    screen.fill(bg_color)
-    draw_gridlines(update_screen=False)
-    draw_axes()
-    draw_lines(datalines, xe, ye, ze, color=med_gray)
+apply_transformation(datalines, translate(-2, 0, 0))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-for i in range(0, 40):
-    time.sleep(.05)
-    ze = ze - 1.51
-    screen.fill(bg_color)
-    draw_gridlines(update_screen=False)
-    draw_axes()
-    draw_lines(datalines, xe, ye, ze, color=med_gray)
+apply_transformation(datalines, translate(0, -2, 0))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(2)
+
+apply_transformation(datalines, translate(0, 0, -2))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+
 
 # to keep displaying the image, the program has to keep running until we shut it down
 running = True
