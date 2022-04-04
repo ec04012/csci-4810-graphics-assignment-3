@@ -349,6 +349,14 @@ t0 = numpy.array([
     [0,0,0,0],
 ])
 
+axis_x = input_lines("axis_x.txt")
+axis_y = input_lines("axis_y.txt")
+axis_z = input_lines("axis_z.txt")
+def draw_axes():
+    draw_lines(axis_x, xe, ye, ze, color=red)
+    draw_lines(axis_y, xe, ye, ze, color=blue)
+    draw_lines(axis_z, xe, ye, ze, color=green)
+
 def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
     print("xe, ye, ze")
     print("%s %s %s" % (xe, ye, ze))
@@ -397,13 +405,13 @@ def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
     vn = t1.dot(t2).dot(t3).dot(t4).dot(t5).dot(n)
     print("vn:")
     print(vn)
-
-    apply_transformation(datalines, vn)
+    datalines_copy = datalines.copy()
+    apply_transformation(datalines_copy, vn)
 
     vsx = vcx = window_size_x / 2
     vsy = vcy = window_size_y / 2
     print("xs1 ys1 xs2 ys2")
-    for line in datalines:
+    for line in datalines_copy:
         xs1 = line[0]/line[2] * vsx + vcx
         ys1 = line[1]/line[2] * vsy + vcy
         xs2 = line[3]/line[5] * vsx + vcx
@@ -415,13 +423,8 @@ def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
 
 xe, ye, ze = 6, 8, 7.5
 datalines = input_lines("cube.txt")
-axis_x = input_lines("axis_x.txt")
-axis_y = input_lines("axis_y.txt")
-axis_z = input_lines("axis_z.txt")
 draw_gridlines(update_screen=False)
-draw_lines(axis_x, xe, ye, ze, color=red)
-draw_lines(axis_y, xe, ye, ze, color=blue)
-draw_lines(axis_z, xe, ye, ze, color=green)
+draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
@@ -432,12 +435,7 @@ for i in range(0, 40):
     screen.fill(bg_color)
     draw_gridlines(update_screen=False)
     datalines = input_lines("cube.txt")
-    axis_x = input_lines("axis_x.txt")
-    axis_y = input_lines("axis_y.txt")
-    axis_z = input_lines("axis_z.txt")
-    draw_lines(axis_x, xe, ye, ze, color=red)
-    draw_lines(axis_y, xe, ye, ze, color=blue)
-    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_axes()
     draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
@@ -448,12 +446,7 @@ for i in range(0, 40):
     screen.fill(bg_color)
     draw_gridlines(update_screen=False)
     datalines = input_lines("cube.txt")
-    axis_x = input_lines("axis_x.txt")
-    axis_y = input_lines("axis_y.txt")
-    axis_z = input_lines("axis_z.txt")
-    draw_lines(axis_x, xe, ye, ze, color=red)
-    draw_lines(axis_y, xe, ye, ze, color=blue)
-    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_axes()
     draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
@@ -463,13 +456,7 @@ for i in range(0, 40):
     ze = ze + .77
     screen.fill(bg_color)
     draw_gridlines(update_screen=False)
-    datalines = input_lines("cube.txt")
-    axis_x = input_lines("axis_x.txt")
-    axis_y = input_lines("axis_y.txt")
-    axis_z = input_lines("axis_z.txt")
-    draw_lines(axis_x, xe, ye, ze, color=red)
-    draw_lines(axis_y, xe, ye, ze, color=blue)
-    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_axes()
     draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
@@ -479,13 +466,7 @@ for i in range(0, 40):
     xe = xe - 1.51
     screen.fill(bg_color)
     draw_gridlines(update_screen=False)
-    datalines = input_lines("cube.txt")
-    axis_x = input_lines("axis_x.txt")
-    axis_y = input_lines("axis_y.txt")
-    axis_z = input_lines("axis_z.txt")
-    draw_lines(axis_x, xe, ye, ze, color=red)
-    draw_lines(axis_y, xe, ye, ze, color=blue)
-    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_axes()
     draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
@@ -495,13 +476,7 @@ for i in range(0, 40):
     ye = ye - 1.51
     screen.fill(bg_color)
     draw_gridlines(update_screen=False)
-    datalines = input_lines("cube.txt")
-    axis_x = input_lines("axis_x.txt")
-    axis_y = input_lines("axis_y.txt")
-    axis_z = input_lines("axis_z.txt")
-    draw_lines(axis_x, xe, ye, ze, color=red)
-    draw_lines(axis_y, xe, ye, ze, color=blue)
-    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_axes()
     draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
@@ -511,13 +486,7 @@ for i in range(0, 40):
     ze = ze - 1.51
     screen.fill(bg_color)
     draw_gridlines(update_screen=False)
-    datalines = input_lines("cube.txt")
-    axis_x = input_lines("axis_x.txt")
-    axis_y = input_lines("axis_y.txt")
-    axis_z = input_lines("axis_z.txt")
-    draw_lines(axis_x, xe, ye, ze, color=red)
-    draw_lines(axis_y, xe, ye, ze, color=blue)
-    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_axes()
     draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 # to keep displaying the image, the program has to keep running until we shut it down
