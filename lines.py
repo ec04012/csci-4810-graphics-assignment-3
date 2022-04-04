@@ -1,7 +1,7 @@
 import pygame
 import pygame.gfxdraw
 from pygame.locals import (KEYDOWN, K_ESCAPE)
-from math import trunc, sin, cos, pi, radians
+from math import trunc, sin, cos, pi, radians, sqrt
 import sys
 import time
 import argparse
@@ -15,7 +15,7 @@ group.add_argument("-bresenham", "-b", action="store_true", help="Use Bresenham 
 parser.add_argument("-grid", "-g", action="store_true", help="Toggles grid lines. Off by default")
 parser.add_argument("-radians", "-r", action="store_true", help="Use radians instead of degrees.")
 parser.add_argument("-clear_screen", "-cs", action="store_true", help="Refresh the window after applying a transformation. Off by default.")
-parser.add_argument('inputFile', type=str, help='Input file containing lines.')
+#parser.add_argument('inputFile', type=str, help='Input file containing lines.')
 print("")
 
 # If user does not specify input file, display help message
@@ -37,6 +37,7 @@ violet = (178,30,241)
 
 white = (255,255,255)
 gray = (230,230,230)
+med_gray = (100, 100, 100)
 black = (10,10,10)
 cyan = (0,255,255)
 magenta = (255,255,0)
@@ -44,8 +45,8 @@ magenta = (255,255,0)
 # Settings 
 bg_color = white
 window_name = "CSCI 4810 Assignment 3"
-window_size_x = 1000
-window_size_y = 1000
+window_size_x = 600
+window_size_y = 600
 
 # Set up screen
 pygame.init()
@@ -212,7 +213,7 @@ def cleanup():
 # update_screen = update screen when after exit, On by default
 def draw_gridlines(update_screen=True):
     # draw in buffer
-    for i in range(0,10):
+    for i in range(0,6):
         simple_alg(i * 100, 0, i * 100, 1000, color=gray)
         simple_alg(0, i * 100, 1000, i * 100, color=gray)
     # update displau
@@ -346,65 +347,178 @@ t0 = numpy.array([
     [0,0,0,0],
 ])
 
-# to keep displaying the image, the program has to keep running until we shut it down
-draw_line(100, 100, 300, 400)
-pygame.display.flip()
+def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
+    print("xe, ye, ze")
+    print("%s %s %s" % (xe, ye, ze))
+    t1 = numpy.array([
+        [  1,  0,  0, 0],
+        [  0,  1,  0, 0],
+        [  0,  0,  1, 0],
+        [-xe,-ye,-ze, 1],
+    ])
+    t2 = numpy.array([
+        [1, 0, 0, 0],
+        [0, 0,-1, 0],
+        [0, 1, 0, 0],
+        [0, 0, 0, 1],
+    ])
+    m1 = ye / sqrt(xe ** 2 + ye ** 2)
+    m2 = xe / sqrt(xe ** 2 + ye ** 2)
+    t3 = numpy.array([
+        [-m1, 0, m2, 0],
+        [  0, 1,  0, 0],
+        [-m2, 0,-m1, 0],
+        [  0, 0,  0, 1],
+    ])
+    m3 = sqrt(xe ** 2 + ye ** 2)/sqrt(ze ** 2 + sqrt(xe ** 2 + ye ** 2)**2)
+    m4 = ze/sqrt(ze ** 2 + sqrt(xe ** 2 + ye ** 2)**2)
+    t4 = numpy.array([
+        [1,  0,  0, 0],
+        [0, m3, m4, 0],
+        [0,-m4, m3, 0],
+        [0,  0,  0, 1],
+    ])
+    t5 = numpy.array([
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0,-1, 0],
+        [0, 0, 0, 1],
+    ])
+    #====================================
+    n = numpy.array([
+        [ d/s,   0,   0,  0],
+        [   0, d/s,   0,  0],
+        [   0,   0,   1,  0],
+        [   0,   0,   0,  1],
+    ])
+    #====================================
+    vn = t1.dot(t2).dot(t3).dot(t4).dot(t5).dot(n)
+    print("vn:")
+    print(vn)
+
+    apply_transformation(datalines, vn)
+
+    vsx = vcx = window_size_x / 2
+    vsy = vcy = window_size_y / 2
+    print("xs1 ys1 xs2 ys2")
+    for line in datalines:
+        xs1 = line[0]/line[2] * vsx + vcx
+        ys1 = line[1]/line[2] * vsy + vcy
+        xs2 = line[3]/line[5] * vsx + vcx
+        ys2 = line[4]/line[5] * vsy + vcy
+        print("%s %s %s %s" % (xs1, ys1, xs2, ys2))
+        draw_line(xs1, ys1, xs2, ys2, color=color)
+    print("")
+    pygame.display.flip()
+
 xe, ye, ze = 6, 8, 7.5
-t1 = numpy.array([
-    [  1,  0,  0, 0],
-    [  0,  1,  0, 0],
-    [  0,  0,  1, 0],
-    [-xe,-ye,-ze, 1],
-])
-t2 = numpy.array([
-    [1, 0, 0, 0],
-    [0, 0,-1, 0],
-    [0, 1, 0, 0],
-    [0, 0, 0, 1],
-])
-t3 = numpy.array([
-    [-.8, 0, .6, 0],
-    [  0, 1,  0, 0],
-    [-.6, 0,-.8, 0],
-    [  0, 0,  0, 1],
-])
-t4 = numpy.array([
-    [1,  0, 0, 0],
-    [0, .8,.6, 0],
-    [0,-.6,.8, 0],
-    [0,  0, 0, 1],
-])
-t5 = numpy.array([
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0,-1, 0],
-    [0, 0, 0, 1],
-])
-#====================================
-n = numpy.array([
-    [  4,  0,  0, 0],
-    [  0,  4,  0, 0],
-    [  0,  0,  1, 0],
-    [  0,  0,  0, 1],
-])
-#====================================
-vn = t1.dot(t2).dot(t3).dot(t4).dot(t5).dot(n)
-print(vn)
-
 datalines = input_lines("cube.txt")
-apply_transformation(datalines, vn)
+axis_x = input_lines("axis_x.txt")
+axis_y = input_lines("axis_y.txt")
+axis_z = input_lines("axis_z.txt")
+draw_gridlines()
+draw_lines(axis_x, xe, ye, ze, color=red)
+draw_lines(axis_y, xe, ye, ze, color=blue)
+draw_lines(axis_z, xe, ye, ze, color=green)
+draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-vsx = vsy = vcx = vcy = 200
+time.sleep(2)
 
-for line in datalines:
-    xs1 = line[0]/line[2] * vsx + vcx
-    ys1 = line[1]/line[2] * vsy + vcy
-    xs2 = line[3]/line[5] * vsx + vcx
-    ys2 = line[4]/line[5] * vsy + vcy
-    print("%s %s %s %s" % (xs1, ys1, xs2, ys2))
-    draw_line(xs1, ys1, xs2, ys2)
-pygame.display.flip()
+for i in range(0, 40):
+    time.sleep(.05)
+    xe = xe + .77
+    screen.fill(bg_color)
+    draw_gridlines()
+    datalines = input_lines("cube.txt")
+    axis_x = input_lines("axis_x.txt")
+    axis_y = input_lines("axis_y.txt")
+    axis_z = input_lines("axis_z.txt")
+    draw_lines(axis_x, xe, ye, ze, color=red)
+    draw_lines(axis_y, xe, ye, ze, color=blue)
+    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_lines(datalines, xe, ye, ze, color=med_gray)
 
+time.sleep(2)
+
+for i in range(0, 40):
+    time.sleep(.05)
+    ye = ye + .77
+    screen.fill(bg_color)
+    draw_gridlines()
+    datalines = input_lines("cube.txt")
+    axis_x = input_lines("axis_x.txt")
+    axis_y = input_lines("axis_y.txt")
+    axis_z = input_lines("axis_z.txt")
+    draw_lines(axis_x, xe, ye, ze, color=red)
+    draw_lines(axis_y, xe, ye, ze, color=blue)
+    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(2)
+
+for i in range(0, 40):
+    time.sleep(.05)
+    ze = ze + .77
+    screen.fill(bg_color)
+    draw_gridlines()
+    datalines = input_lines("cube.txt")
+    axis_x = input_lines("axis_x.txt")
+    axis_y = input_lines("axis_y.txt")
+    axis_z = input_lines("axis_z.txt")
+    draw_lines(axis_x, xe, ye, ze, color=red)
+    draw_lines(axis_y, xe, ye, ze, color=blue)
+    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(2)
+
+for i in range(0, 40):
+    time.sleep(.05)
+    xe = xe - 1.51
+    screen.fill(bg_color)
+    draw_gridlines()
+    datalines = input_lines("cube.txt")
+    axis_x = input_lines("axis_x.txt")
+    axis_y = input_lines("axis_y.txt")
+    axis_z = input_lines("axis_z.txt")
+    draw_lines(axis_x, xe, ye, ze, color=red)
+    draw_lines(axis_y, xe, ye, ze, color=blue)
+    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(2)
+
+for i in range(0, 40):
+    time.sleep(.05)
+    ye = ye - 1.51
+    screen.fill(bg_color)
+    draw_gridlines()
+    datalines = input_lines("cube.txt")
+    axis_x = input_lines("axis_x.txt")
+    axis_y = input_lines("axis_y.txt")
+    axis_z = input_lines("axis_z.txt")
+    draw_lines(axis_x, xe, ye, ze, color=red)
+    draw_lines(axis_y, xe, ye, ze, color=blue)
+    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(2)
+
+for i in range(0, 40):
+    time.sleep(.05)
+    ze = ze - 1.51
+    screen.fill(bg_color)
+    draw_gridlines()
+    datalines = input_lines("cube.txt")
+    axis_x = input_lines("axis_x.txt")
+    axis_y = input_lines("axis_y.txt")
+    axis_z = input_lines("axis_z.txt")
+    draw_lines(axis_x, xe, ye, ze, color=red)
+    draw_lines(axis_y, xe, ye, ze, color=blue)
+    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+# to keep displaying the image, the program has to keep running until we shut it down
 running = True
 while running:
     check_for_exit()
