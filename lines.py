@@ -269,12 +269,13 @@ def translate(tx, ty, tz):
 ])
     return t_matrix
 
-def basic_scale(sx, sy):
+def basic_scale(sx, sy, sz):
     t_matrix = numpy.array([
-        [sx,0,0],
-        [0,sy,0],
-        [0,0,1],
-    ])
+    [sx, 0, 0, 0],
+    [ 0,sy, 0, 0],
+    [ 0, 0,sz, 0],
+    [ 0, 0, 0, 1],
+])
     return t_matrix
 
 def scale(sx, sy, cx, cy):
@@ -439,19 +440,19 @@ draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-apply_transformation(datalines, translate(2, 0, 0))
+apply_transformation(datalines, basic_scale(2, 1, 1))
 draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-apply_transformation(datalines, translate(0, 2, 0))
+apply_transformation(datalines, basic_scale(1, 2, 1))
 draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-apply_transformation(datalines, translate(0, 0, 2))
+apply_transformation(datalines, basic_scale(1, 1, 2))
 draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
@@ -459,25 +460,44 @@ time.sleep(2)
 
 screen.fill(bg_color)
 pygame.display.flip()
-apply_transformation(datalines, translate(-2, -2, -2))
+apply_transformation(datalines, basic_scale(.5, .5, .5))
 draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-apply_transformation(datalines, translate(-2, 0, 0))
+apply_transformation(datalines, basic_scale(-.5, 1, 1))
 draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-apply_transformation(datalines, translate(0, -2, 0))
+apply_transformation(datalines, basic_scale(1, -.5, 1))
 draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(2)
 
-apply_transformation(datalines, translate(0, 0, -2))
+apply_transformation(datalines, basic_scale(1, 1, -.5))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(2)
+
+screen.fill(bg_color)
+apply_transformation(datalines, basic_scale(1, 1, 1))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(2)
+
+apply_transformation(datalines, translate(1.5, 0, 0))
+draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(2)
+
+apply_transformation(datalines, basic_scale(-1, 1, 1))
 draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
