@@ -614,6 +614,7 @@ while running:
         if args.axes:
             print("Drawing axes")
         else:
+            screen.fill(bg_color)
             print("NOT drawing axes")
         print("")
         draw_lines(lines, color=med_gray)
