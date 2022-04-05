@@ -283,21 +283,16 @@ def scale(sx, sy, sz, cx, cy, cz):
     t_matrix = translate(-cx, -cy, -cz).dot(basic_scale(sx, sy, sz)).dot(translate(cx, cy, cz))
     return t_matrix
 
-# Rotates cw if angle is positive,
-# Rotate ccw if angle is negative
-def basic_rotation(angle):
+# Rotate ccw if angle is positive
+# Rotates cw if angle is negative
+# Assuming eye is on x axis and pointed towards origin
+def rotation_x(angle):
     t_matrix = numpy.array([
-        [cos(angle),-sin(angle),0],
-        [sin(angle), cos(angle),0],
-        [0,0,1],
+        [ 1,           0,          0, 0],
+        [ 0,  cos(angle), sin(angle), 0],
+        [ 0, -sin(angle), cos(angle), 0],
+        [ 0,           0,          0, 1],
     ])
-    return t_matrix
-
-# Rotates cw if angle is positive,
-# Rotate ccw if angle is negative
-# cx, cy is center of rotation
-def rotation(angle, cx, cy):
-    t_matrix = translate(-cx, -cy).dot(basic_rotation(angle)).dot(translate(cx, cy))
     return t_matrix
 
 # Reads the specified file and returns a numpy array
@@ -454,23 +449,24 @@ xe, ye, ze = 6, 8, 7.5
 datalines = input_lines("cube.txt")
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-args.clear_screen = True
-for i in range(0, 10):
+for i in range(0, 3):
     time.sleep(1)
-    xe = xe - .4
-    #apply_transformation(datalines, scale(2, 1, 1, .8, .8, .8))
+    apply_transformation(datalines, rotation_x(30))
     draw_lines(datalines, xe, ye, ze, color=med_gray)
-args.clear_screen = False
 
 time.sleep(1)
 
-apply_transformation(datalines, scale(2, 1, 1, .8, .8, .8))
+datalines = input_lines("cube.txt")
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(1)
-
-apply_transformation(datalines, scale(1.3, 1.3, 1.3, -1, .5, .8))
+apply_transformation(datalines, rotation_x(-45))
 draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(1)
+apply_transformation(datalines, rotation_x(-45))
+draw_lines(datalines, xe, ye, ze, color=med_gray)
+
 #time.sleep(1)
 
 #xe = xe + 2
