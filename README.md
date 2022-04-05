@@ -1,5 +1,9 @@
 # CSCI-4810-graphics-assignment-3
 
+Run `lines.py` to run program.
+
+Run `lines.py -h` for help message.
+
 ## Sources for Assignment 3:
 1. https://www.geeksforgeeks.org/multithreading-python-set-1/
 2. https://www.geeksforgeeks.org/python-daemon-threads/
