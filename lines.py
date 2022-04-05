@@ -360,24 +360,6 @@ def output_lines(datalines, fileName):
             f.write(' '.join(row))
             f.write("\n")
 
-# Read from file
-# lines = input_lines(args.inputFile)
-# Draw grid if requested
-# draw lines from file
-#display_lines(lines)
-# print original coordinates
-#print("Original figure")
-#print(lines)
-#print("")
-
-
-t0 = numpy.array([
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0],
-])
-
 axis_x = input_lines("axis_x.txt")
 axis_y = input_lines("axis_y.txt")
 axis_z = input_lines("axis_z.txt")
@@ -399,8 +381,8 @@ def draw_lines(datalines, color=red):
     global ze
     global d
     global s
-    print("xe, ye, ze")
-    print("%s %s %s" % (xe, ye, ze))
+    #print("xe, ye, ze")
+    #print("%s %s %s" % (xe, ye, ze))
     t1 = numpy.array([
         [  1,  0,  0, 0],
         [  0,  1,  0, 0],
@@ -444,14 +426,14 @@ def draw_lines(datalines, color=red):
     ])
     #====================================
     vn = t1.dot(t2).dot(t3).dot(t4).dot(t5).dot(n)
-    print("vn:")
-    print(vn)
+    #print("vn:")
+    #print(vn)
     datalines_copy = datalines.copy()
     apply_transformation(datalines_copy, vn)
 
     vsx = vcx = window_size_x / 2
     vsy = vcy = window_size_y / 2
-    print("xs1 ys1 xs2 ys2")
+    #print("xs1 ys1 xs2 ys2")
 
     if args.clear_screen:
         screen.fill(bg_color)
@@ -466,9 +448,9 @@ def draw_lines(datalines, color=red):
         ys1 = line[1]/line[2] * vsy + vcy
         xs2 = line[3]/line[5] * vsx + vcx
         ys2 = line[4]/line[5] * vsy + vcy
-        print("%s %s %s %s" % (xs1, ys1, xs2, ys2))
+        #print("%s %s %s %s" % (xs1, ys1, xs2, ys2))
         draw_line(xs1, ys1, xs2, ys2, color=color)
-    print("")
+    #print("")
     pygame.display.flip()
 
 xe, ye, ze = 6, 8, 7.5
