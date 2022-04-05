@@ -387,13 +387,16 @@ def draw_axes():
     og_value = args.clear_screen
     args.clear_screen = False
     parent_is_not_draw_axes = False
-    draw_lines(axis_x, xe, ye, ze, color=red)
-    draw_lines(axis_y, xe, ye, ze, color=blue)
-    draw_lines(axis_z, xe, ye, ze, color=green)
+    draw_lines(axis_x, color=red)
+    draw_lines(axis_y, color=blue)
+    draw_lines(axis_z, color=green)
     args.clear_screen = og_value
     parent_is_not_draw_axes = True
 
-def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
+def draw_lines(datalines, d=60, s=15, color=red):
+    global xe
+    global ye
+    global ze
     print("xe, ye, ze")
     print("%s %s %s" % (xe, ye, ze))
     t1 = numpy.array([
@@ -483,10 +486,11 @@ while running:
         print("translate, t \t\t tx ty tz")
         print("basic_scale, bs \t sx sy sz")
         print("scale, s \t\t sx sy sz cx cy cz")
-        print("rotate_x, rx \t angle")
-        print("rotate_y, ry \t angle")
-        print("rotate_z, rz \t angle")
+        print("rotate_x, rx \t\t angle")
+        print("rotate_y, ry \t\t angle")
+        print("rotate_z, rz \t\t angle")
         print("output, o \t\t filename")
+        print("ecs \t\t\t xe ye ze")
         print("radians")
         print("degrees")
         print("")
@@ -583,6 +587,20 @@ while running:
         else:
             output_lines(lines, command[1])
             print("")
+    elif command[0]=="ecs":
+        command = userInput.split()
+        if len(command) != 4:
+            print("Invalid command.")
+            print("")
+        else:
+            try:
+                command[1], command[2], command[3] = float(command[1]), float(command[2]), float(command[3])
+                xe, ye, ze = command[1], command[2], command[3]
+                draw_lines(lines, color=med_gray)
+                print("")
+            except ValueError:
+                print("Invalid command.")
+                print("")
     elif command[0]=='degrees':
         args.radians = False
         print("")
