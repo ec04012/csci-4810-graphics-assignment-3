@@ -279,8 +279,8 @@ def basic_scale(sx, sy, sz):
 ])
     return t_matrix
 
-def scale(sx, sy, cx, cy):
-    t_matrix = translate(-cx, -cy).dot(basic_scale(sx, sy)).dot(translate(cx, cy))
+def scale(sx, sy, sz, cx, cy, cz):
+    t_matrix = translate(-cx, -cy, -cz).dot(basic_scale(sx, sy, sz)).dot(translate(cx, cy, cz))
     return t_matrix
 
 # Rotates cw if angle is positive,
@@ -454,61 +454,27 @@ xe, ye, ze = 6, 8, 7.5
 datalines = input_lines("cube.txt")
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
+args.clear_screen = True
+for i in range(0, 10):
+    time.sleep(1)
+    xe = xe - .4
+    #apply_transformation(datalines, scale(2, 1, 1, .8, .8, .8))
+    draw_lines(datalines, xe, ye, ze, color=med_gray)
+args.clear_screen = False
+
 time.sleep(1)
 
-apply_transformation(datalines, basic_scale(2, 1, 1))
+apply_transformation(datalines, scale(2, 1, 1, .8, .8, .8))
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(1)
 
-apply_transformation(datalines, basic_scale(1, 2, 1))
+apply_transformation(datalines, scale(1.3, 1.3, 1.3, -1, .5, .8))
 draw_lines(datalines, xe, ye, ze, color=med_gray)
+#time.sleep(1)
 
-time.sleep(1)
-
-apply_transformation(datalines, basic_scale(1, 1, 2))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-time.sleep(1)
-
-pygame.display.flip()
-apply_transformation(datalines, basic_scale(.5, .5, .5))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-time.sleep(1)
-
-apply_transformation(datalines, basic_scale(-.5, 1, 1))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-time.sleep(1)
-
-apply_transformation(datalines, basic_scale(1, -.5, 1))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-time.sleep(1)
-
-apply_transformation(datalines, basic_scale(1, 1, -.5))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-time.sleep(1)
-
-apply_transformation(datalines, basic_scale(1, 1, 1))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-time.sleep(1)
-
-apply_transformation(datalines, translate(1.5, 0, 0))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-time.sleep(1)
-
-apply_transformation(datalines, basic_scale(-1, 1, 1))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-time.sleep(1)
-
-xe = xe + 2
-draw_lines(datalines, xe, ye, ze, color=med_gray)
+#xe = xe + 2
+#draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 while running:
     pass
