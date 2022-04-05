@@ -497,6 +497,8 @@ while running:
         print("ecs \t\t\t xe ye ze")
         print("dis \t\t\t distance")
         print("ss \t\t\t screen_size")
+        print("cs \t\t\t toggles clear_screen")
+        print("ax \t\t\t toggles axes")
         print("radians")
         print("degrees")
         print("")
@@ -625,8 +627,20 @@ while running:
             s = float(command[1])
             draw_lines(lines, color=med_gray)
             print("")
-    elif command[0]=='degrees':
-        args.radians = False
+    elif command[0]=='ax':
+        args.axes = not args.axes
+        if args.axes:
+            print("Drawing axes")
+        else:
+            print("NOT drawing axes")
+        print("")
+        draw_lines(lines, color=med_gray)
+    elif command[0]=='cs':
+        args.clear_screen = not args.clear_screen
+        if args.clear_screen:
+            print("Clearing screen")
+        else:
+            print("NOT clearing screen")
         print("")
     elif command[0]=='radians':
         args.radians = True
