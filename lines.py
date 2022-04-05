@@ -295,6 +295,19 @@ def rotation_x(angle):
     ])
     return t_matrix
 
+# Rotate ccw if angle is positive
+# Rotates cw if angle is negative
+# Assuming eye is on y axis and pointed towards origin
+def rotation_y(angle):
+    t_matrix = numpy.array([
+        [ cos(angle), 0, -sin(angle), 0],
+        [          0, 1,           0, 0],
+        [ sin(angle), 0,  cos(angle), 0],
+        [          0, 0,           0, 1],
+    ])
+    return t_matrix
+
+
 # Reads the specified file and returns a numpy array
 def input_lines(fileName):
     # Read file
@@ -451,21 +464,30 @@ draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 for i in range(0, 3):
     time.sleep(1)
-    apply_transformation(datalines, rotation_x(30))
+    apply_transformation(datalines, rotation_y(30))
     draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(1)
+time.sleep(2)
 
+args.clear_screen = True
 datalines = input_lines("cube.txt")
 draw_lines(datalines, xe, ye, ze, color=med_gray)
+args.clear_screen = False
 
 time.sleep(1)
-apply_transformation(datalines, rotation_x(-45))
+apply_transformation(datalines, rotation_y(-45))
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(1)
-apply_transformation(datalines, rotation_x(-45))
+apply_transformation(datalines, rotation_y(-45))
 draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+args.clear_screen = True
+for i in range(0, 10):
+    time.sleep(1)
+    xe = xe - .77
+    ze = ze-.77
+    draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 #time.sleep(1)
 
