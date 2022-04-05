@@ -287,11 +287,12 @@ def scale(sx, sy, sz, cx, cy, cz):
 # Rotates cw if angle is negative
 # Assuming eye is on x axis and pointed towards origin
 def rotation_x(angle):
+    in_rads =  angle if args.radians else radians(angle)
     t_matrix = numpy.array([
-        [ 1,           0,          0, 0],
-        [ 0,  cos(angle), sin(angle), 0],
-        [ 0, -sin(angle), cos(angle), 0],
-        [ 0,           0,          0, 1],
+        [ 1,             0,            0, 0],
+        [ 0,  cos(in_rads), sin(in_rads), 0],
+        [ 0, -sin(in_rads), cos(in_rads), 0],
+        [ 0,             0,            0, 1],
     ])
     return t_matrix
 
@@ -299,11 +300,25 @@ def rotation_x(angle):
 # Rotates cw if angle is negative
 # Assuming eye is on y axis and pointed towards origin
 def rotation_y(angle):
+    in_rads =  angle if args.radians else radians(angle)
     t_matrix = numpy.array([
-        [ cos(angle), 0, -sin(angle), 0],
-        [          0, 1,           0, 0],
-        [ sin(angle), 0,  cos(angle), 0],
-        [          0, 0,           0, 1],
+        [ cos(in_rads), 0, -sin(in_rads), 0],
+        [            0, 1,             0, 0],
+        [ sin(in_rads), 0,  cos(in_rads), 0],
+        [            0, 0,             0, 1],
+    ])
+    return t_matrix
+
+# Rotate ccw if angle is positive
+# Rotates cw if angle is negative
+# Assuming eye is on z axis and pointed towards origin
+def rotation_z(angle):
+    in_rads =  angle if args.radians else radians(angle)
+    t_matrix = numpy.array([
+        [ cos(in_rads),  sin(in_rads), 0, 0],
+        [-sin(in_rads),  cos(in_rads), 0, 0],
+        [            0,             0, 1, 0],
+        [            0,             0, 0, 1],
     ])
     return t_matrix
 
@@ -462,32 +477,33 @@ xe, ye, ze = 6, 8, 7.5
 datalines = input_lines("cube.txt")
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
+args.clear_screen = True
+for i in range(0, 10):
+    time.sleep(1)
+    xe = xe - .77
+    ye = ye-.77
+    draw_lines(datalines, xe, ye, ze, color=indigo)
+args.clear_screen = False
 for i in range(0, 3):
     time.sleep(1)
-    apply_transformation(datalines, rotation_y(30))
+    apply_transformation(datalines, rotation_z(20))
     draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(20)
 
 args.clear_screen = True
 datalines = input_lines("cube.txt")
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 args.clear_screen = False
 
-time.sleep(1)
-apply_transformation(datalines, rotation_y(-45))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-time.sleep(1)
-apply_transformation(datalines, rotation_y(-45))
-draw_lines(datalines, xe, ye, ze, color=med_gray)
-
-args.clear_screen = True
-for i in range(0, 10):
+for i in range(0, 2):
     time.sleep(1)
-    xe = xe - .77
-    ze = ze-.77
+    apply_transformation(datalines, rotation_z(-60))
     draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(1)
+apply_transformation(datalines, rotation_z(-60))
+draw_lines(datalines, xe, ye, ze, color=indigo)
 
 #time.sleep(1)
 
