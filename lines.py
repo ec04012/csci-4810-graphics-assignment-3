@@ -361,13 +361,14 @@ axis_z = input_lines("axis_z.txt")
 parent_is_not_draw_axes = True
 def draw_axes():
     global parent_is_not_draw_axes
+    og_value = args.clear_screen
+    args.clear_screen = False
     parent_is_not_draw_axes = False
     draw_lines(axis_x, xe, ye, ze, color=red)
-    parent_is_not_draw_axes = False
     draw_lines(axis_y, xe, ye, ze, color=blue)
-    parent_is_not_draw_axes = False
     draw_lines(axis_z, xe, ye, ze, color=green)
-    parent_is_not_draw_axes = False
+    args.clear_screen = og_value
+    parent_is_not_draw_axes = True
 
 def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
     print("xe, ye, ze")
@@ -427,9 +428,10 @@ def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
     if args.clear_screen:
         screen.fill(bg_color)
     global parent_is_not_draw_axes
+    # draw_axes calls draw_lines
+    # so we use parent_is_not_draw_axes to prevent a stack overflow
     if args.axes and parent_is_not_draw_axes:
         draw_axes()
-        parent_is_not_draw_axes = True
 
     for line in datalines_copy:
         xs1 = line[0]/line[2] * vsx + vcx
@@ -469,7 +471,6 @@ draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(1)
 
-screen.fill(bg_color)
 pygame.display.flip()
 apply_transformation(datalines, basic_scale(.5, .5, .5))
 draw_lines(datalines, xe, ye, ze, color=med_gray)
@@ -491,7 +492,6 @@ draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 time.sleep(1)
 
-screen.fill(bg_color)
 apply_transformation(datalines, basic_scale(1, 1, 1))
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
