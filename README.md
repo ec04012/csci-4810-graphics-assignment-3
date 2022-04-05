@@ -4,6 +4,8 @@ Run `lines.py` to run program.
 
 Run `lines.py -h` for help message.
 
+[YouTube Link](https://youtu.be/VyVEBPhl2y0)
+
 ## Sources for Assignment 3:
 1. https://www.geeksforgeeks.org/multithreading-python-set-1/
 2. https://www.geeksforgeeks.org/python-daemon-threads/
