@@ -1,5 +1,9 @@
 # CSCI-4810-graphics-assignment-3
 
+## Sources for Assignment 3:
+1. https://www.geeksforgeeks.org/multithreading-python-set-1/
+2. https://www.geeksforgeeks.org/python-daemon-threads/
+
 ## Sources from Assignment 2:
 1. https://www.programiz.com/python-programming/matrix
 2. https://www.w3schools.com/python/ref_math_sin.asp

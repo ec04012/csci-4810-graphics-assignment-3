@@ -6,6 +6,7 @@ import sys
 import time
 import argparse
 import numpy
+import threading
 
 # read command line arguments
 parser = argparse.ArgumentParser()
@@ -195,12 +196,14 @@ def bresenham(x0, y0, x1, y1, color):
 
 # check if the user has exited the program
 def check_for_exit():
-    for event in pygame.event.get():
-        if event.type == KEYDOWN: # Did the user hit a key?
-            if event.key == K_ESCAPE: # Was it the Escape key? If so, stop the loop.
+    global running
+    while running:
+        for event in pygame.event.get():
+            if event.type == KEYDOWN: # Did the user hit a key?
+                if event.key == K_ESCAPE: # Was it the Escape key? If so, stop the loop.
+                    cleanup()
+            if event.type == pygame.QUIT: # Exit game if user clicks x button
                 cleanup()
-        if event.type == pygame.QUIT: # Exit game if user clicks x button
-            cleanup()
 
 # function to call when exiting the program
 def cleanup():
@@ -422,6 +425,13 @@ def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
     print("")
     pygame.display.flip()
 
+running = True
+t1 = threading.Thread(target=check_for_exit)
+t1.setDaemon(True)
+# starting thread 1
+t1.start()
+# starting th
+
 xe, ye, ze = 6, 8, 7.5
 datalines = input_lines("cube.txt")
 draw_axes()
@@ -471,117 +481,118 @@ apply_transformation(datalines, translate(0, 0, -2))
 draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-
+while running:
+    pass
 
 # to keep displaying the image, the program has to keep running until we shut it down
-running = True
-while running:
-    check_for_exit()
-    """
-    userInput = input("Enter a command, or type help:\n")
+#running = True
+#while running:
+#check_for_exit()
+"""
+userInput = input("Enter a command, or type help:\n")
+command = userInput.split()
+#print(command)
+if command[0] == 'exit' or command[0] == 'quit' or command[0] == 'q':
+    cleanup()
+elif command[0] == 'help' or command[0] == 'h':
+    print("")
+    print("translate, t \t\t tx ty")
+    print("basic_scale, bs \t sx sy")
+    print("basic_rotate, br \t angle")
+    print("scale, s \t\t sx sy cx cy")
+    print("rotate, r \t\t angle cx cy")
+    print("output, o \t\t filename")
+    print("radians")
+    print("degrees")
+    print("")
+elif command[0]=="translate" or command[0]=='t':
     command = userInput.split()
-    #print(command)
-    if command[0] == 'exit' or command[0] == 'quit' or command[0] == 'q':
-        cleanup()
-    elif command[0] == 'help' or command[0] == 'h':
-        print("")
-        print("translate, t \t\t tx ty")
-        print("basic_scale, bs \t sx sy")
-        print("basic_rotate, br \t angle")
-        print("scale, s \t\t sx sy cx cy")
-        print("rotate, r \t\t angle cx cy")
-        print("output, o \t\t filename")
-        print("radians")
-        print("degrees")
-        print("")
-    elif command[0]=="translate" or command[0]=='t':
-        command = userInput.split()
-        if len(command) != 3:
-            print("Invalid command.")
-            print("")
-        else:
-            try:
-                command[1], command[2] = float(command[1]), float(command[2])
-                apply_transformation(lines, translate(command[1], command[2]))
-                display_lines(lines)
-                print("")
-            except ValueError:
-                print("Invalid command.")
-                print("")
-    elif command[0]=='basic_scale' or command[0]=='bs':
-        command = userInput.split()
-        if len(command) != 3:
-            print("Invalid command.")
-            print("")
-        else:
-            try:
-                command[1], command[2] = float(command[1]), float(command[2])
-                apply_transformation(lines, basic_scale(command[1], command[2]))
-                display_lines(lines)
-                print("")
-            except ValueError:
-                print("Invalid command.")
-                print("")
-    elif command[0]=='basic_rotate' or command[0]=='br':
-        command = userInput.split()
-        if len(command) != 2:
-            print("Invalid command.")
-            print("")
-        else:
-            try:
-                command[1] = float(command[1])
-                command[1] = command[1] if args.radians else radians(command[1])
-                apply_transformation(lines, basic_rotation(command[1]))
-                display_lines(lines)
-                print("")
-            except ValueError:
-                print("Invalid command.")
-                print("")
-    elif command[0]=='scale' or command[0]=="s":
-        command = userInput.split()
-        if len(command) != 5:
-            print("Invalid command.")
-            print("")
-        else:
-            try:
-                command[1], command[2], command[3], command[4] = float(command[1]), float(command[2]), int(command[3]), int(command[4])
-                apply_transformation(lines, scale(command[1], command[2], command[3], command[4]))
-                display_lines(lines)
-                print("")
-            except ValueError:
-                print("Invalid command.")
-                print("")
-    elif command[0]=='rotate' or command[0]=="r":
-        command = userInput.split()
-        if len(command) != 4:
-            print("Invalid command.")
-            print("")
-        else:
-            try:
-                command[1], command[2], command[3] = float(command[1]), int(command[2]), int(command[3])
-                command[1] = command[1] if args.radians else radians(command[1])
-                apply_transformation(lines, rotation(command[1], command[2], command[3]))
-                display_lines(lines)
-                print("")
-            except ValueError:
-                print("Invalid command.")
-                print("")
-    elif command[0]=='output' or command[0]=='o':
-        command = userInput.split()
-        if len(command) != 2:
-            print("Invalid command.")
-            print("")
-        else:
-            output_lines(lines, command[1])
-            print("")
-    elif command[0]=='degrees':
-        args.radians = False
-        print("")
-    elif command[0]=='radians':
-        args.radians = True
-        print("")
-    else:
+    if len(command) != 3:
         print("Invalid command.")
         print("")
-    # while running
-    """
+    else:
+        try:
+            command[1], command[2] = float(command[1]), float(command[2])
+            apply_transformation(lines, translate(command[1], command[2]))
+            display_lines(lines)
+            print("")
+        except ValueError:
+            print("Invalid command.")
+            print("")
+elif command[0]=='basic_scale' or command[0]=='bs':
+    command = userInput.split()
+    if len(command) != 3:
+        print("Invalid command.")
+        print("")
+    else:
+        try:
+            command[1], command[2] = float(command[1]), float(command[2])
+            apply_transformation(lines, basic_scale(command[1], command[2]))
+            display_lines(lines)
+            print("")
+        except ValueError:
+            print("Invalid command.")
+            print("")
+elif command[0]=='basic_rotate' or command[0]=='br':
+    command = userInput.split()
+    if len(command) != 2:
+        print("Invalid command.")
+        print("")
+    else:
+        try:
+            command[1] = float(command[1])
+            command[1] = command[1] if args.radians else radians(command[1])
+            apply_transformation(lines, basic_rotation(command[1]))
+            display_lines(lines)
+            print("")
+        except ValueError:
+            print("Invalid command.")
+            print("")
+elif command[0]=='scale' or command[0]=="s":
+    command = userInput.split()
+    if len(command) != 5:
+        print("Invalid command.")
+        print("")
+    else:
+        try:
+            command[1], command[2], command[3], command[4] = float(command[1]), float(command[2]), int(command[3]), int(command[4])
+            apply_transformation(lines, scale(command[1], command[2], command[3], command[4]))
+            display_lines(lines)
+            print("")
+        except ValueError:
+            print("Invalid command.")
+            print("")
+elif command[0]=='rotate' or command[0]=="r":
+    command = userInput.split()
+    if len(command) != 4:
+        print("Invalid command.")
+        print("")
+    else:
+        try:
+            command[1], command[2], command[3] = float(command[1]), int(command[2]), int(command[3])
+            command[1] = command[1] if args.radians else radians(command[1])
+            apply_transformation(lines, rotation(command[1], command[2], command[3]))
+            display_lines(lines)
+            print("")
+        except ValueError:
+            print("Invalid command.")
+            print("")
+elif command[0]=='output' or command[0]=='o':
+    command = userInput.split()
+    if len(command) != 2:
+        print("Invalid command.")
+        print("")
+    else:
+        output_lines(lines, command[1])
+        print("")
+elif command[0]=='degrees':
+    args.radians = False
+    print("")
+elif command[0]=='radians':
+    args.radians = True
+    print("")
+else:
+    print("Invalid command.")
+    print("")
+# while running
+"""
