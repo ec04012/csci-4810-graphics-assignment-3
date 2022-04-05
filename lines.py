@@ -393,10 +393,12 @@ def draw_axes():
     args.clear_screen = og_value
     parent_is_not_draw_axes = True
 
-def draw_lines(datalines, d=60, s=15, color=red):
+def draw_lines(datalines, color=red):
     global xe
     global ye
     global ze
+    global d
+    global s
     print("xe, ye, ze")
     print("%s %s %s" % (xe, ye, ze))
     t1 = numpy.array([
@@ -470,6 +472,8 @@ def draw_lines(datalines, d=60, s=15, color=red):
     pygame.display.flip()
 
 xe, ye, ze = 6, 8, 7.5
+d = 60
+s = 15
 lines = input_lines(args.inputFile)
 draw_lines(lines, color=med_gray)
 
@@ -491,6 +495,8 @@ while running:
         print("rotate_z, rz \t\t angle")
         print("output, o \t\t filename")
         print("ecs \t\t\t xe ye ze")
+        print("dis \t\t\t distance")
+        print("ss \t\t\t screen_size")
         print("radians")
         print("degrees")
         print("")
@@ -601,6 +607,24 @@ while running:
             except ValueError:
                 print("Invalid command.")
                 print("")
+    elif command[0]=='dis':
+        command = userInput.split()
+        if len(command) != 2:
+            print("Invalid command.")
+            print("")
+        else:
+            d = float(command[1])
+            draw_lines(lines, color=med_gray)
+            print("")
+    elif command[0]=='ss':
+        command = userInput.split()
+        if len(command) != 2:
+            print("Invalid command.")
+            print("")
+        else:
+            s = float(command[1])
+            draw_lines(lines, color=med_gray)
+            print("")
     elif command[0]=='degrees':
         args.radians = False
         print("")
