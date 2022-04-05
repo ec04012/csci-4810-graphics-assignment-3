@@ -16,6 +16,7 @@ group.add_argument("-bresenham", "-b", action="store_true", help="Use Bresenham 
 parser.add_argument("-grid", "-g", action="store_true", help="Toggles grid lines. Off by default")
 parser.add_argument("-radians", "-r", action="store_true", help="Use radians instead of degrees.")
 parser.add_argument("-clear_screen", "-cs", action="store_true", help="Refresh the window after applying a transformation. Off by default.")
+parser.add_argument("-axes", "-ax", action="store_true", help="Show lines for the x, y, and z axes.")
 #parser.add_argument('inputFile', type=str, help='Input file containing lines.')
 print("")
 
@@ -357,10 +358,16 @@ t0 = numpy.array([
 axis_x = input_lines("axis_x.txt")
 axis_y = input_lines("axis_y.txt")
 axis_z = input_lines("axis_z.txt")
+parent_is_not_draw_axes = True
 def draw_axes():
+    global parent_is_not_draw_axes
+    parent_is_not_draw_axes = False
     draw_lines(axis_x, xe, ye, ze, color=red)
+    parent_is_not_draw_axes = False
     draw_lines(axis_y, xe, ye, ze, color=blue)
+    parent_is_not_draw_axes = False
     draw_lines(axis_z, xe, ye, ze, color=green)
+    parent_is_not_draw_axes = False
 
 def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
     print("xe, ye, ze")
@@ -416,6 +423,14 @@ def draw_lines(datalines, xe=6, ye=8, ze=7.5, d=60, s=15, color=red):
     vsx = vcx = window_size_x / 2
     vsy = vcy = window_size_y / 2
     print("xs1 ys1 xs2 ys2")
+
+    if args.clear_screen:
+        screen.fill(bg_color)
+    global parent_is_not_draw_axes
+    if args.axes and parent_is_not_draw_axes:
+        draw_axes()
+        parent_is_not_draw_axes = True
+
     for line in datalines_copy:
         xs1 = line[0]/line[2] * vsx + vcx
         ys1 = line[1]/line[2] * vsy + vcy
@@ -435,70 +450,64 @@ t1.start()
 
 xe, ye, ze = 6, 8, 7.5
 datalines = input_lines("cube.txt")
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 apply_transformation(datalines, basic_scale(2, 1, 1))
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 apply_transformation(datalines, basic_scale(1, 2, 1))
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 apply_transformation(datalines, basic_scale(1, 1, 2))
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 screen.fill(bg_color)
 pygame.display.flip()
 apply_transformation(datalines, basic_scale(.5, .5, .5))
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 apply_transformation(datalines, basic_scale(-.5, 1, 1))
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 apply_transformation(datalines, basic_scale(1, -.5, 1))
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 apply_transformation(datalines, basic_scale(1, 1, -.5))
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 screen.fill(bg_color)
 apply_transformation(datalines, basic_scale(1, 1, 1))
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 apply_transformation(datalines, translate(1.5, 0, 0))
-draw_axes()
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
-time.sleep(2)
+time.sleep(1)
 
 apply_transformation(datalines, basic_scale(-1, 1, 1))
-draw_axes()
+draw_lines(datalines, xe, ye, ze, color=med_gray)
+
+time.sleep(1)
+
+xe = xe + 2
 draw_lines(datalines, xe, ye, ze, color=med_gray)
 
 while running:
